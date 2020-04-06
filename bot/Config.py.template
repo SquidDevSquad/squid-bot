@@ -1,0 +1,5 @@
+# The token needed to contact your bot
+DISCORD_TOKEN = ''
+
+# Needs to be at the beginning of every command
+COMMAND_PREFIX = ''
