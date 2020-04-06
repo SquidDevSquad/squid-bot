@@ -1,1 +1,3 @@
 bot/.env
+bot/__pycache__
+bot/Config.py
