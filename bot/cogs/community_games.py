@@ -1,5 +1,6 @@
 import discord
 
+import Config
 import helper.GlobaleVariables as GlobaleVariables
 from helper.Helpers import *
 
@@ -51,8 +52,12 @@ class CommunityGames(commands.Cog):
         if not GlobaleVariables.registrationOpened:
             await ctx.send(ctx.author.mention + ' Registrations are not opened yet')
             return
-        
+
         playerName = get_ingame_name_by_user(ctx.author.name)
+
+        if not playerName:
+            await ctx.send(ctx.author.mention + ' You are not registered with an ingame character. Please use the `' + Config.COMMAND_PREFIX + 'register USERNAME` command.')
+            return
 
         if playerName in GlobaleVariables.bench or playerName in GlobaleVariables.playersList:
             await ctx.send(ctx.author.mention + ' You are already registered for the community games')
