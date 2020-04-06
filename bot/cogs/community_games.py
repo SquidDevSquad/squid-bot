@@ -86,11 +86,6 @@ class CommunityGames(commands.Cog):
         for x in range(0, len(GlobaleVariables.playersList)):
             embed.add_field(name="Player " + str(x + 1) + ":", value=GlobaleVariables.playersList[x], inline=True)
         await ctx.send(embed=embed)
-
-    @commands.Cog.listener()
-    async def on_reaction_add(self, reaction, user):
-        channel = reaction.message.channel
-        await channel.send(reaction.emoji)
     
 
 
