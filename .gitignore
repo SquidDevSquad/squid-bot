@@ -1,3 +1,6 @@
 bot/.env
-bot/__pycache__
 bot/Config.py
+
+playerlist.txt
+
+__pycache__/
