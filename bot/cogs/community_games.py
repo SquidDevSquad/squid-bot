@@ -16,6 +16,10 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="open")
     async def open_registration_command(self, ctx):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         if GlobaleVariables.registrationOpened:
             await ctx.send(ctx.author.mention + ' Registrations are already opened')
             return
@@ -31,6 +35,10 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="close")
     async def close_registration_command(self, ctx):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         if not GlobaleVariables.registrationOpened:
             await ctx.send(ctx.author.mention + ' Registrations are already closed')
             return
@@ -39,6 +47,10 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="register")
     async def register_player_name_command(self, ctx, ingameName):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         if (user_exists_in_file(ctx.author.name)):
             registeredName = get_ingame_name_by_user(ctx.author.name)
             await ctx.send(ctx.author.mention + ' You are already registerd with the name ' + registeredName)
@@ -49,6 +61,11 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="add")
     async def add_participant_command(self, ctx):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
+
         if not GlobaleVariables.registrationOpened:
             await ctx.send(ctx.author.mention + ' Registrations are not opened yet')
             return
@@ -69,6 +86,10 @@ class CommunityGames(commands.Cog):
     
     @commands.command(name="remove")
     async def remove_participant_command(self, ctx):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         ingameName = get_ingame_name_by_user(ctx.author.name)
 
         if ingameName in GlobaleVariables.playersList:
@@ -82,6 +103,10 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="participants")
     async def show_participants_command(self, ctx):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         embed = discord.Embed(title="Participants", color=0x00ff00)
         for x in range(0, len(GlobaleVariables.playersList)):
             embed.add_field(name="Player " + str(x + 1) + ":", value=GlobaleVariables.playersList[x], inline=True)

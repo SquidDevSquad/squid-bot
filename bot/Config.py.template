@@ -3,3 +3,6 @@ DISCORD_TOKEN = ''
 
 # Needs to be at the beginning of every command
 COMMAND_PREFIX = ''
+
+# Names of the allowed channel
+ALLOWED_CHANNEL = []

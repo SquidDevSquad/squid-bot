@@ -28,3 +28,8 @@ def get_ingame_name_by_user(name):
 def create_playerfile_if_doesnt_exist():
     if not os.path.exists('./files/playerlist.txt'):
         os.mknod('./files/playerlist.txt')
+
+def can_operate_in_channel(currentChannel, allowedChannel):
+    if currentChannel in allowedChannel:
+        return True
+    return False

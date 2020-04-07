@@ -1,6 +1,7 @@
 import discord
 
 import helper.GlobaleVariables as GlobaleVariables
+from helper.Helpers import *
 
 from discord.ext import commands
 from random import randrange
@@ -11,6 +12,11 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @commands.command(name="test")
     async def test_command(self, ctx):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
+
         if GlobaleVariables.registrationOpened:
             await ctx.send(ctx.author.mention + " Registrations open you can register now")
         else:
@@ -18,6 +24,11 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @commands.command(name="generateTeams")
     async def generate_teams_command(self, ctx):
+        channel = ctx.message.channel.name
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
+
         if len(GlobaleVariables.playersList) < 12:
             await ctx.send(ctx.author.mention + ' Not enough player for 2 teams')
             return
