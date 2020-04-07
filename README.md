@@ -11,6 +11,13 @@
 | !participants | Shows a list of all registered users for the community games |
 | !generateTeams | Generates 2 teams à 6 players |
 
+## Configuration
+| Config | Description |
+|---|---|
+| DISCORD_TOKEN | The token needed to contact your bot |
+| COMMAND_PREFIX | Needs to be at the beginning of every command |
+| ALLOWED_CHANNEL | Names of the allowed channel |
+
 ## How to install
 
 Create a copy of the `Config.py.template` file and rename it to `Config.py`. Afterwards open it and insert your Bot token to the `DISCORD_TOKEN` constant. Now decide which prefix the commands should have and fill it in the `COMMAND_PREFIX` constant.
