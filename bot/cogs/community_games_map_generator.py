@@ -16,8 +16,15 @@ class CommunityGamesMapGenerator(commands.Cog):
 
     @commands.command(name="addMap")
     async def add_map_command(self, ctx, mapName):
+        if not is_admin(ctx.author.id):
+            await ctx.send('You don\'t have the permissions to use this command')
+            return
         if is_map_already_registered(mapName):
             await ctx.send(ctx.author.mention + " the map " + mapName + " is already registered.")
+            return
+        channel = ctx.message.channel.id
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
             return
 
         add_map_to_file(mapName)
@@ -25,6 +32,10 @@ class CommunityGamesMapGenerator(commands.Cog):
     
     @commands.command(name="getMaps")
     async def get_maps_command(self, ctx):
+        channel = ctx.message.channel.id
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         maps = get_maps_from_file()
 
         if len(maps) == 0:
@@ -38,6 +49,10 @@ class CommunityGamesMapGenerator(commands.Cog):
 
     @commands.command(name="getRandomMap")
     async def get_random_map_command(self, ctx):
+        channel = ctx.message.channel.id
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         maps = get_maps_from_file()
 
         if (len(maps) == len(GlobaleVariables.usedMaps)):
@@ -52,14 +67,35 @@ class CommunityGamesMapGenerator(commands.Cog):
     
     @commands.command(name="resetMaps")
     async def reset_maps_command(self, ctx):
+        if not is_admin(ctx.author.id):
+            await ctx.send('You don\'t have the permissions to use this command')
+            return
+        channel = ctx.message.channel.id
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         del GlobaleVariables.usedMaps[:]
     
     @commands.command(name="getUsedMaps")
     async def get_used_maps_command(self, ctx):
+        if not is_admin(ctx.author.id):
+            await ctx.send('You don\'t have the permissions to use this command')
+            return
+        channel = ctx.message.channel.id
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         await ctx.send(GlobaleVariables.usedMaps)
     
     @commands.command(name="removeMap")
     async def remove_map_command(self, ctx, mapName):
+        if not is_admin(ctx.author.id):
+            await ctx.send('You don\'t have the permissions to use this command')
+            return
+        channel = ctx.message.channel.id
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
         remove_map_from_list(mapName)
         GlobaleVariables.usedMaps.remove(mapName)
         await ctx.send(ctx.author.mention + " " + mapName + " got removed from the list")

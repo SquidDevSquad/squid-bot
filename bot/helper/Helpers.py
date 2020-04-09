@@ -1,5 +1,7 @@
 import os
 
+import Config
+
 def write_player_data_to_file(name, ingameName):
     playerListFile = open("./files/playerlist.txt", "a")
     playerListFile.write(name + "=" + ingameName + "\n")
@@ -67,6 +69,9 @@ def remove_map_from_list(mapName):
         for line in lines:
             if line.strip("\n") != mapName:
                 f.write(line)
+
+def is_admin(userId):
+    return userId in Config.ALLOWED_USER_TO_ADMIN_COMMANDS
 
 
     

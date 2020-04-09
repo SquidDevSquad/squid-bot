@@ -16,7 +16,10 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="open")
     async def open_registration_command(self, ctx):
-        channel = ctx.message.channel.name
+        if not is_admin(ctx.author.id):
+            await ctx.send('You don\'t have the permissions to use this command')
+            return
+        channel = ctx.message.channel.id
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
             await ctx.send('Not allowed to operate here')
             return
@@ -35,7 +38,10 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="close")
     async def close_registration_command(self, ctx):
-        channel = ctx.message.channel.name
+        if not is_admin(ctx.author.id):
+            await ctx.send('You don\'t have the permissions to use this command')
+            return
+        channel = ctx.message.channel.id
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
             await ctx.send('Not allowed to operate here')
             return
@@ -61,7 +67,7 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="add")
     async def add_participant_command(self, ctx):
-        channel = ctx.message.channel.name
+        channel = ctx.message.channel.id
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
             await ctx.send('Not allowed to operate here')
             return
@@ -86,7 +92,7 @@ class CommunityGames(commands.Cog):
     
     @commands.command(name="remove")
     async def remove_participant_command(self, ctx):
-        channel = ctx.message.channel.name
+        channel = ctx.message.channel.id
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
             await ctx.send('Not allowed to operate here')
             return
@@ -103,7 +109,7 @@ class CommunityGames(commands.Cog):
 
     @commands.command(name="participants")
     async def show_participants_command(self, ctx):
-        channel = ctx.message.channel.name
+        channel = ctx.message.channel.id
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
             await ctx.send('Not allowed to operate here')
             return

@@ -14,7 +14,10 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @commands.command(name="test")
     async def test_command(self, ctx):
-        channel = ctx.message.channel.name
+        if not is_admin(ctx.author.id):
+            await ctx.send('This command can only be executed by an admin')
+            return
+        channel = ctx.message.channel.id
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
             await ctx.send('Not allowed to operate here')
             return
@@ -26,7 +29,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @commands.command(name="generateTeams")
     async def generate_teams_command(self, ctx):
-        channel = ctx.message.channel.name
+        channel = ctx.message.channel.id
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
             await ctx.send('Not allowed to operate here')
             return
