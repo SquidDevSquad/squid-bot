@@ -5,6 +5,13 @@
 | User | Standard user (everyone) |
 | Admin | All user who are entered in the ALLOWED_USER_TO_ADMIN_COMMANDS configuration |
 
+## Standard Comamnds
+| Command | Description | Permissions |
+|--|--|--|
+| load [cog] | Loads a certain Cog (Extension) |
+| unload [cog] | Unloads a certain Cog (Extension) |
+| reload [cog] | Unloads a certain Cog (Extension) |
+
 ## Community Games
 | Command | Description | Permissions |
 |--|--|--|
