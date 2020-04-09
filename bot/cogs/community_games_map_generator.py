@@ -61,6 +61,7 @@ class CommunityGamesMapGenerator(commands.Cog):
     @commands.command(name="removeMap")
     async def remove_map_command(self, ctx, mapName):
         remove_map_from_list(mapName)
+        GlobaleVariables.usedMaps.remove(mapName)
         await ctx.send(ctx.author.mention + " " + mapName + " got removed from the list")
         
     
