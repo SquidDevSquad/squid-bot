@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from helper.Helpers import *
 from random import randrange
+from random import randint
 import helper.GlobaleVariables as GlobaleVariables
 
 class CommunityGamesMapGenerator(commands.Cog):
@@ -15,16 +16,16 @@ class CommunityGamesMapGenerator(commands.Cog):
 
     @commands.command(name="addMap")
     async def add_map_command(self, ctx, mapName):
-        print(mapName)
         if is_map_already_registered(mapName):
             await ctx.send(ctx.author.mention + " the map " + mapName + " is already registered.")
             return
+
         add_map_to_file(mapName)
+        await ctx.send(ctx.author.mention + mapName + " was registered to the pool.")
     
     @commands.command(name="getMaps")
     async def get_maps_command(self, ctx):
         maps = get_maps_from_file()
-        print(maps)
 
         if len(maps) == 0:
             await ctx.send('No maps to show')
@@ -39,23 +40,32 @@ class CommunityGamesMapGenerator(commands.Cog):
     async def get_random_map_command(self, ctx):
         maps = get_maps_from_file()
 
-        print(len(maps))
-        print(len(GlobaleVariables.usedMaps))
-
         if (len(maps) == len(GlobaleVariables.usedMaps)):
             await ctx.send("All maps are used up. You need to reset the maps first")
             return
-        
+
         map = self.get_random_map(maps)
         while map in GlobaleVariables.usedMaps:
             map = self.get_random_map(maps)
         GlobaleVariables.usedMaps.append(map)
-        print(GlobaleVariables.usedMaps)
         await ctx.send(map)
+    
+    @commands.command(name="resetMaps")
+    async def reset_maps_command(self, ctx):
+        del GlobaleVariables.usedMaps[:]
+    
+    @commands.command(name="getUsedMaps")
+    async def get_used_maps_command(self, ctx):
+        await ctx.send(GlobaleVariables.usedMaps)
+    
+    @commands.command(name="removeMap")
+    async def remove_map_command(self, ctx, mapName):
+        remove_map_from_list(mapName)
+        await ctx.send(ctx.author.mention + " " + mapName + " got removed from the list")
         
     
     def get_random_map(self, maps):
-        randomIndex = randrange(0, len(maps) - 1)
+        randomIndex = randint(0, len(maps) - 1)
         return maps[randomIndex]
 
         

@@ -1,5 +1,7 @@
 import discord
 
+import Config
+
 import helper.GlobaleVariables as GlobaleVariables
 from helper.Helpers import *
 
