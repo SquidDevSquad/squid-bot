@@ -55,7 +55,6 @@ class CommunityGamesTeamGenerator(commands.Cog):
             GlobaleVariables.alreadyUsedIndex.append(playerIndex)
             team.append(GlobaleVariables.playersAllowedToPlay[playerIndex])
             x += 1
-        print(team)
         return team
     
     def generate_teams(self):

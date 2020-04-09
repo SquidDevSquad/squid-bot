@@ -41,7 +41,6 @@ def can_operate_in_channel(currentChannel, allowedChannel):
 def is_map_already_registered(mapName):
     mapfile = open("./files/maplist.txt", "r")
     for line in mapfile:
-        print(mapName + " - " + line.rstrip())
         if line.rstrip() == mapName:
             mapfile.close()
             return True
