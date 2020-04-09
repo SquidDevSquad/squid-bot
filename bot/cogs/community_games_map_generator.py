@@ -105,11 +105,5 @@ class CommunityGamesMapGenerator(commands.Cog):
         randomIndex = randint(0, len(maps) - 1)
         return maps[randomIndex]
 
-        
-    
-    
-
-
-
 def setup(client):
     client.add_cog(CommunityGamesMapGenerator(client))
