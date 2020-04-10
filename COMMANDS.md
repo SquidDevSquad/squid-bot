@@ -8,9 +8,9 @@
 ## Standard Comamnds
 | Command | Description | Permissions |
 |--|--|--|
-| load [cog] | Loads a certain Cog (Extension) |
-| unload [cog] | Unloads a certain Cog (Extension) |
-| reload [cog] | Unloads a certain Cog (Extension) |
+| load [cog] | Loads a certain Cog (Extension) | Admin
+| unload [cog] | Unloads a certain Cog (Extension) | Admin
+| reload [cog] | Unloads a certain Cog (Extension) | Admin
 
 ## Community Games
 | Command | Description | Permissions |
@@ -21,6 +21,9 @@
 | remove | Removes the current player from the pool of players for the community games | User |
 | participants | Shows a list of all registered users for the community games | User |
 | register [ingameName] | Register player to list | User |
+| registerUser [mentionUser] [ingameName] | Register another user to the playerlist | Admin |
+| addUser [mentionUser] | Add the mentioned user to the playerpool | Admin |
+| removeUser [mentionUser] | Removes the mentioned user from the playerpool | Admin |
 
 ## Team Generator
 | Command | Description | Permissions |

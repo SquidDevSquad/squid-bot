@@ -15,6 +15,12 @@ for filename in os.listdir('./cogs'):
 async def on_ready():
     print("Bot started")
 
+@client.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send('Please fill in all required arguments')
+        return
+
 @client.command(description="Loads an extension")
 async def load(ctx, extension):
     if not is_admin(ctx.author.id):
