@@ -9,3 +9,6 @@ ALLOWED_CHANNEL = []
 
 # Players allowed to use admin commands
 ALLOWED_USER_TO_ADMIN_COMMANDS = []
+
+# Channel where the giveaway happens
+GIVEAWAY_VOICE_CHANNEL = 0000000000000

@@ -8,3 +8,5 @@ bench = list()
 usedMaps = list()
 
 registrationOpened = False
+
+userForGiveaway = list()

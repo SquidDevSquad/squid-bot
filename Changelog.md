@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 1.1.0
+## 2020-04-10
+### Added
+- Added the giveaway module 
+- You can now configure a specific voice channel where giveaways happen
+
+## Version 1.0.0
 ## 2020-04-10
 ### Added
 - Added more user commands for admins
