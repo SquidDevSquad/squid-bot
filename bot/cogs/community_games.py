@@ -188,6 +188,20 @@ class CommunityGames(commands.Cog):
         write_player_data_to_file(userId, ingameName)
         await ctx.send('Successfully registered ' + user.name + ' with username ' + ingameName)
 
+    @commands.command(name="deleteUser")
+    async def delete_user_command(self, ctx, user : discord.User):
+        if not is_admin(ctx.author.id):
+            await ctx.send('You don\'t have the permissions to use this command')
+            return
+        channel = ctx.message.channel.id
+        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
+            await ctx.send('Not allowed to operate here')
+            return
+        
+        userId = user.id
+        delete_user_in_file(userId)
+        await ctx.send(ctx.author.mention + ' Successfully removed ' + user.name + ' from the list')
+
 
 def setup(client):
     client.add_cog(CommunityGames(client))

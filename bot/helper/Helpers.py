@@ -27,6 +27,15 @@ def get_ingame_name_by_id(userId):
     playerListFile.close()
     return ''
 
+def delete_user_in_file(userId):
+    with open("./files/playerlist.txt", 'r') as f:
+        lines = f.readlines()
+    with open("./files/playerlist.txt", 'w') as f:
+        for line in lines:
+            lineArray = line.split('=')
+            if lineArray[0] != str(userId):
+                f.write(line)
+
 def create_playerfile_if_doesnt_exist():
     if not os.path.exists('./files/playerlist.txt'):
         os.mknod('./files/playerlist.txt')
