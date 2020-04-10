@@ -40,3 +40,9 @@
 | getRandomMap | Gets a random map | User |
 | getUsedMaps | Shows all maps which were already used | Admin |
 | resetMaps | Resets the used maps | Admin |
+
+## Giveaway
+| Command | Description | Permissions |
+|--|--|--|
+| getGiveawayUser | Saves all user who are in the configured voice channel | Admin |
+| getGiveawayWinner | Draws a random user from the giveaway list | Admin |
