@@ -2,30 +2,39 @@ import os
 
 import Config
 
-def write_player_data_to_file(name, ingameName):
+def write_player_data_to_file(userId, ingameName):
     playerListFile = open("./files/playerlist.txt", "a")
-    playerListFile.write(name + "=" + ingameName + "\n")
+    playerListFile.write(str(userId) + "=" + ingameName + "\n")
     playerListFile.close()
 
-def user_exists_in_file(name):
+def user_exists_in_file(userId):
     playerListFile = open("./files/playerlist.txt", "r")
     for line in playerListFile:
         lineArray = line.split('=')
-        if lineArray[0] == name:
+        if lineArray[0] == userId:
             playerListFile.close()
             return True
     playerListFile.close()
     return False
 
-def get_ingame_name_by_user(name):
+def get_ingame_name_by_id(userId):
     playerListFile = open("./files/playerlist.txt", "r")
     for line in playerListFile:
         lineArray = line.split('=')
-        if lineArray[0] == name:
+        if lineArray[0] == str(userId):
             playerListFile.close()
             return lineArray[1].rstrip()
     playerListFile.close()
     return ''
+
+def delete_user_in_file(userId):
+    with open("./files/playerlist.txt", 'r') as f:
+        lines = f.readlines()
+    with open("./files/playerlist.txt", 'w') as f:
+        for line in lines:
+            lineArray = line.split('=')
+            if lineArray[0] != str(userId):
+                f.write(line)
 
 def create_playerfile_if_doesnt_exist():
     if not os.path.exists('./files/playerlist.txt'):
