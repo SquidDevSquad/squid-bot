@@ -30,7 +30,7 @@ class CommunityGames(commands.Cog):
         del GlobaleVariables.playersList[:]
         del GlobaleVariables.bench[:]
         del GlobaleVariables.teams[:]
-        del GlobaleVariables.playersAllowedToPlayer[:]
+        del GlobaleVariables.playersAllowedToPlay[:]
         del GlobaleVariables.alreadyUsedIndex[:]
 
         GlobaleVariables.registrationOpened = True
@@ -104,8 +104,8 @@ class CommunityGames(commands.Cog):
             GlobaleVariables.playersList.remove(ingameName)
         if ingameName in GlobaleVariables.bench:
             GlobaleVariables.bench.remove(ingameName)
-        if ingameName in GlobaleVariables.playersAllowedToPlayer:
-            GlobaleVariables.playersAllowedToPlayer.remove(ingameName)
+        if ingameName in GlobaleVariables.playersAllowedToPlay:
+            GlobaleVariables.playersAllowedToPlay.remove(ingameName)
 
         await ctx.send(ctx.author.mention + ' Removed you from the list of participants')
 
@@ -165,8 +165,8 @@ class CommunityGames(commands.Cog):
             GlobaleVariables.playersList.remove(ingameName)
         if ingameName in GlobaleVariables.bench:
             GlobaleVariables.bench.remove(ingameName)
-        if ingameName in GlobaleVariables.playersAllowedToPlayer:
-            GlobaleVariables.playersAllowedToPlayer.remove(ingameName)
+        if ingameName in GlobaleVariables.playersAllowedToPlay:
+            GlobaleVariables.playersAllowedToPlay.remove(ingameName)
         
         await ctx.send(ctx.author.mention + ' Removed ' + user.name +' from the list of participants')
 

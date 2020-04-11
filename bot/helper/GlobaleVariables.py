@@ -1,5 +1,5 @@
 playersList = list()
-playersAllowedToPlayer = list()
+playersAllowedToPlay = list()
 alreadyUsedIndex = list()
 
 teams = list()
