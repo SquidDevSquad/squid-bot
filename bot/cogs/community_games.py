@@ -88,6 +88,10 @@ class CommunityGames(commands.Cog):
             await ctx.send(ctx.author.mention + ' You are already registered for the community games')
             return
         
+        # If first teams were generated already, add to bench as well
+        if len(GlobaleVariables.bench) > 0:
+            GlobaleVariables.bench.append(playerName)
+
         GlobaleVariables.playersList.append(playerName)
 
         await ctx.send(ctx.author.mention + ' You are now registered for the community games')

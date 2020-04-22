@@ -7,6 +7,7 @@ from helper.Helpers import *
 
 from discord.ext import commands
 from random import randrange
+from random import randint
 
 class CommunityGamesTeamGenerator(commands.Cog):
     def __init__(self, client):
@@ -57,21 +58,56 @@ class CommunityGamesTeamGenerator(commands.Cog):
     
     def fill_players_allowed_to_play(self):
         if (len(GlobaleVariables.bench) > 0):
-            playerToBench = len(GlobaleVariables.bench)
+            # Get amount of player who have to get benched
+            playersToBench = len(GlobaleVariables.bench)
+
             tempBench = list()
+            tempUsedIndex = list()
 
-            for benched in range(0, playerToBench):
-                playerIndexToRemove = randrange(len(GlobaleVariables.playersAllowedToPlay))
+            x = 0
+
+            while x < playersToBench:
+                playerIndexToRemove = randint(0, len(GlobaleVariables.playersAllowedToPlay) - 1)                
+
+                # Redraw if user is already in temp bench
+                if playerIndexToRemove in tempUsedIndex:
+                    continue;
+
+                # Add index to used indexes
+                tempUsedIndex.append(playerIndexToRemove)
+                # Add player to the temporary bench list
                 tempBench.append(GlobaleVariables.playersAllowedToPlay[playerIndexToRemove])
-            
-            for i in range(0, playerToBench):
-                GlobaleVariables.playersAllowedToPlay.append(GlobaleVariables.bench[i])
-            
-            del GlobaleVariables.bench[:]
+                x = x + 1
 
-            for x in range(0, len(tempBench)):
-                GlobaleVariables.bench.append(tempBench[x])
+            # Empty list of benched players
+            del GlobaleVariables.bench[:]
+            # Removed all indexes which were used
+            del tempUsedIndex[:]
+            # Empty list of player who are allowed to play
+            del GlobaleVariables.playersAllowedToPlay[:]
+
+            playersAllowedToPlayAmount = len(GlobaleVariables.playersList) - len(tempBench)
+
+            x = 0
+            while x < playersAllowedToPlayAmount:
+                allowedToPlayIndex = randint(0, len(GlobaleVariables.playersList) - 1)
+                if allowedToPlayIndex in tempUsedIndex:
+                    continue
+                
+                playerName = GlobaleVariables.playersList[allowedToPlayIndex]
+                if playerName in GlobaleVariables.bench:
+                    continue
+                
+                tempUsedIndex.append(allowedToPlayIndex)
+                GlobaleVariables.playersAllowedToPlay.append(playerName)
+                x = x + 1
+            
+
+            for benched in tempBench:
+                GlobaleVariables.bench.append(benched)
+            
             del tempBench[:]
+
         else:
             playersToBench = len(GlobaleVariables.playersList) - 12
             usedIndex = list()
