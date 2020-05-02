@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-import file.GlobaleVariables as GlobaleVariables
+import GlobalVariables as GlobaleVariables
 from file.FileRepository import *
 
 
