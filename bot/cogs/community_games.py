@@ -1,10 +1,9 @@
 import discord
-
-import Config
-import helper.GlobaleVariables as GlobaleVariables
-from helper.Helpers import *
-
 from discord.ext import commands
+
+import file.GlobaleVariables as GlobaleVariables
+from file.FileRepository import *
+
 
 class CommunityGames(commands.Cog):
     def __init__(self, client):

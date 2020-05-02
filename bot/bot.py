@@ -1,15 +1,14 @@
-import os
-import discord
 from discord.ext import commands
-from helper.Helpers import *
-import Config
 
-client = commands.Bot(command_prefix = Config.COMMAND_PREFIX)
+from file.FileRepository import *
+
+client = commands.Bot(command_prefix=Config.COMMAND_PREFIX)
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         print('Load: ' + filename)
         client.load_extension(f'cogs.{filename[:-3]}')
+
 
 @client.event
 async def on_ready():

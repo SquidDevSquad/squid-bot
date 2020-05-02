@@ -1,13 +1,12 @@
-import discord
-
-import Config
-
-import helper.GlobaleVariables as GlobaleVariables
-from helper.Helpers import *
-
-from discord.ext import commands
-from random import randrange
 from random import randint
+from random import randrange
+
+import discord
+from discord.ext import commands
+
+import file.GlobaleVariables as GlobaleVariables
+from file.FileRepository import *
+
 
 class CommunityGamesTeamGenerator(commands.Cog):
     def __init__(self, client):
