@@ -28,6 +28,12 @@ class CommunityGamesTeamGenerator(commands.Cog):
         del GlobaleVariables.teams[:]
 
         self.fill_players_allowed_to_play()
+
+        numberOfPlayersAllowed = len(GlobaleVariables.playersAllowedToPlay)
+        if numberOfPlayersAllowed < 12:
+            await ctx.send('NO U')
+            return
+
         self.generate_teams()
         await ctx.send(embed=self.generate_team_embed_message(1, GlobaleVariables.teams[0]))
         await ctx.send(embed=self.generate_team_embed_message(2, GlobaleVariables.teams[1]))
@@ -61,16 +67,27 @@ class CommunityGamesTeamGenerator(commands.Cog):
             # Get amount of player who have to get benched
             playersToBench = len(GlobaleVariables.bench)
 
+            if len(GlobaleVariables.playersAllowedToPlay) < 12:
+                print('Less than 12 players')
+                missingPlayer = 12 - len(GlobaleVariables.playersAllowedToPlay)
+                playersToBench = playersToBench - missingPlayer
+
             tempBench = list()
             tempUsedIndex = list()
 
             x = 0
-
             while x < playersToBench:
                 playerIndexToRemove = randint(0, len(GlobaleVariables.playersAllowedToPlay) - 1)                
 
                 # Redraw if user is already in temp bench
                 if playerIndexToRemove in tempUsedIndex:
+                    print('Index already used')
+                    continue;
+                
+                playerName = GlobaleVariables.playersAllowedToPlay[playerIndexToRemove]
+
+                if not playerName in GlobaleVariables.playersList:
+                    print('Player not registered anymore')
                     continue;
 
                 # Add index to used indexes
