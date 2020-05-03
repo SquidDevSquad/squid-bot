@@ -18,8 +18,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock = MagicMock()
         ctx_mock.message.channel.id = "Some channel"
         Config.ALLOWED_CHANNEL = []
-        client = MagicMock()
-        comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client)
+        comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(None)
         loop = asyncio.get_event_loop()
         loop.run_until_complete(comm_games_team_generator.generate_teams_command(comm_games_team_generator, ctx_mock))
         self.assertTrue(ctx_mock.send.called)
