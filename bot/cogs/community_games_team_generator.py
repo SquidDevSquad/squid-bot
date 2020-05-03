@@ -1,13 +1,15 @@
-import discord
-
-import Config
-
-import helper.GlobaleVariables as GlobaleVariables
-from helper.Helpers import *
-
-from discord.ext import commands
-from random import randrange
 from random import randint
+from random import randrange
+
+import discord
+from discord.ext import commands
+
+import GlobalVariables as GlobalVariables
+from file.FileRepository import *
+from log import LoggerFactory
+
+log = LoggerFactory.get_logger(__name__)
+
 
 class CommunityGamesTeamGenerator(commands.Cog):
     def __init__(self, client):
@@ -15,61 +17,68 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @commands.command(name="generateTeams")
     async def generate_teams_command(self, ctx):
+        log.info('Generating teams...')
         channel = ctx.message.channel.id
+        log.info('Current channels are:%s. Allowed Channels are:%s', channel, Config.ALLOWED_CHANNEL)
         if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
+            log.error("Cannot generate teams in any of the current channels. Aborting.")
+            await ctx.send('Not allowed to operate on this channel')
             return
 
-        if len(GlobaleVariables.playersList) < 12:
-            await ctx.send(ctx.author.mention + ' Not enough player for 2 teams')
+        number_of_players = len(GlobalVariables.playersList)
+
+        if number_of_players < 12:
+            error_msg = get_not_enough_players_msg(number_of_players)
+            log.error(error_msg)
+            await ctx.send(ctx.author.mention + error_msg)
             return
-        
-        del GlobaleVariables.alreadyUsedIndex[:]
-        del GlobaleVariables.teams[:]
+
+        del GlobalVariables.alreadyUsedIndex[:]
+        del GlobalVariables.teams[:]
 
         self.fill_players_allowed_to_play()
 
-        numberOfPlayersAllowed = len(GlobaleVariables.playersAllowedToPlay)
-        if numberOfPlayersAllowed < 12:
-            await ctx.send('NO U')
+        number_of_players_allowed = len(GlobalVariables.playersAllowedToPlay)
+        if number_of_players_allowed < 12:
+            error_msg = get_not_enough_players_msg(number_of_players_allowed)
+            await ctx.send(error_msg)
             return
 
         self.generate_teams()
-        await ctx.send(embed=self.generate_team_embed_message(1, GlobaleVariables.teams[0]))
-        await ctx.send(embed=self.generate_team_embed_message(2, GlobaleVariables.teams[1]))
+        await ctx.send(embed=self.generate_team_embed_message(1, GlobalVariables.teams[0]))
+        await ctx.send(embed=self.generate_team_embed_message(2, GlobalVariables.teams[1]))
 
-            
     def generate_team(self):
-        numberOfPlayers = len(GlobaleVariables.playersAllowedToPlay)
+        number_of_players = len(GlobalVariables.playersAllowedToPlay)
         team = list()
         x = 0
-        while (x < 6):
-            playerIndex = randrange(numberOfPlayers)
-            if playerIndex in GlobaleVariables.alreadyUsedIndex:
+        while x < 6:
+            player_index = randrange(number_of_players)
+            if player_index in GlobalVariables.alreadyUsedIndex:
                 continue
-            GlobaleVariables.alreadyUsedIndex.append(playerIndex)
-            team.append(GlobaleVariables.playersAllowedToPlay[playerIndex])
+            GlobalVariables.alreadyUsedIndex.append(player_index)
+            team.append(GlobalVariables.playersAllowedToPlay[player_index])
             x += 1
         return team
-    
+
     def generate_teams(self):
         for x in range(0, 2):
-            GlobaleVariables.teams.append(self.generate_team())
-    
-    def generate_team_embed_message(self, numberOfTeam, team):
-        embed = discord.Embed(title="Team " + str(numberOfTeam), color=0x00ff00)
+            GlobalVariables.teams.append(self.generate_team())
+
+    def generate_team_embed_message(self, number_of_team, team):
+        embed = discord.Embed(title="Team " + str(number_of_team), color=0x00ff00)
         for x in range(0, len(team)):
             embed.add_field(name="Player " + str(x + 1) + ":", value=team[x], inline=True)
         return embed
-    
-    def fill_players_allowed_to_play(self):
-        if (len(GlobaleVariables.bench) > 0):
-            # Get amount of player who have to get benched
-            playersToBench = len(GlobaleVariables.bench)
 
-            if len(GlobaleVariables.playersAllowedToPlay) < 12:
+    def fill_players_allowed_to_play(self):
+        if (len(GlobalVariables.bench) > 0):
+            # Get amount of player who have to get benched
+            playersToBench = len(GlobalVariables.bench)
+
+            if len(GlobalVariables.playersAllowedToPlay) < 12:
                 print('Less than 12 players')
-                missingPlayer = 12 - len(GlobaleVariables.playersAllowedToPlay)
+                missingPlayer = 12 - len(GlobalVariables.playersAllowedToPlay)
                 playersToBench = playersToBench - missingPlayer
 
             tempBench = list()
@@ -77,70 +86,74 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
             x = 0
             while x < playersToBench:
-                playerIndexToRemove = randint(0, len(GlobaleVariables.playersAllowedToPlay) - 1)                
+                playerIndexToRemove = randint(0, len(GlobalVariables.playersAllowedToPlay) - 1)
 
                 # Redraw if user is already in temp bench
                 if playerIndexToRemove in tempUsedIndex:
                     print('Index already used')
                     continue;
-                
-                playerName = GlobaleVariables.playersAllowedToPlay[playerIndexToRemove]
 
-                if not playerName in GlobaleVariables.playersList:
+                playerName = GlobalVariables.playersAllowedToPlay[playerIndexToRemove]
+
+                if not playerName in GlobalVariables.playersList:
                     print('Player not registered anymore')
                     continue;
 
                 # Add index to used indexes
                 tempUsedIndex.append(playerIndexToRemove)
                 # Add player to the temporary bench list
-                tempBench.append(GlobaleVariables.playersAllowedToPlay[playerIndexToRemove])
+                tempBench.append(GlobalVariables.playersAllowedToPlay[playerIndexToRemove])
                 x = x + 1
 
             # Empty list of benched players
-            del GlobaleVariables.bench[:]
+            del GlobalVariables.bench[:]
             # Removed all indexes which were used
             del tempUsedIndex[:]
             # Empty list of player who are allowed to play
-            del GlobaleVariables.playersAllowedToPlay[:]
+            del GlobalVariables.playersAllowedToPlay[:]
 
-            playersAllowedToPlayAmount = len(GlobaleVariables.playersList) - len(tempBench)
+            playersAllowedToPlayAmount = len(GlobalVariables.playersList) - len(tempBench)
 
             x = 0
             while x < playersAllowedToPlayAmount:
-                allowedToPlayIndex = randint(0, len(GlobaleVariables.playersList) - 1)
+                allowedToPlayIndex = randint(0, len(GlobalVariables.playersList) - 1)
                 if allowedToPlayIndex in tempUsedIndex:
                     continue
-                
-                playerName = GlobaleVariables.playersList[allowedToPlayIndex]
-                if playerName in GlobaleVariables.bench:
+
+                playerName = GlobalVariables.playersList[allowedToPlayIndex]
+                if playerName in GlobalVariables.bench:
                     continue
-                
+
                 tempUsedIndex.append(allowedToPlayIndex)
-                GlobaleVariables.playersAllowedToPlay.append(playerName)
+                GlobalVariables.playersAllowedToPlay.append(playerName)
                 x = x + 1
-            
 
             for benched in tempBench:
-                GlobaleVariables.bench.append(benched)
-            
+                GlobalVariables.bench.append(benched)
+
             del tempBench[:]
 
         else:
-            playersToBench = len(GlobaleVariables.playersList) - 12
+            playersToBench = len(GlobalVariables.playersList) - 12
             usedIndex = list()
             x = 0
             while (x < playersToBench):
                 playerToRemoveIndex = randrange(playersToBench)
                 if playerToRemoveIndex in usedIndex:
                     continue
-                GlobaleVariables.bench.append(GlobaleVariables.playersList[playerToRemoveIndex])
+                GlobalVariables.bench.append(GlobalVariables.playersList[playerToRemoveIndex])
                 usedIndex.append(playerToRemoveIndex)
                 x += 1
-            for x in range(0, len(GlobaleVariables.playersList)):
+            for x in range(0, len(GlobalVariables.playersList)):
                 if x in usedIndex:
                     continue
-                GlobaleVariables.playersAllowedToPlay.append(GlobaleVariables.playersList[x])
+                GlobalVariables.playersAllowedToPlay.append(GlobalVariables.playersList[x])
 
 
 def setup(client):
     client.add_cog(CommunityGamesTeamGenerator(client))
+
+
+def get_not_enough_players_msg(current_number_of_players):
+    return ' Not enough players for 2 teams. Currently have: {currentNumberOfPlayers}. ' \
+           'At least 12 players needed.'.format(currentNumberOfPlayers=current_number_of_players)

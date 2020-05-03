@@ -24,12 +24,12 @@
 | registerUser [mentionUser] [ingameName] | Register another user to the playerlist | Admin |
 | addUser [mentionUser] | Add the mentioned user to the playerpool | Admin |
 | removeUser [mentionUser] | Removes the mentioned user from the playerpool | Admin |
-| deleteUser [mentionUser] | Deletes a player from the playerlist | Admin |
+| deleteUser [mentionUser] | Deletes a player from the playerlist textfile | Admin |
 
 ## Team Generator
 | Command | Description | Permissions |
 |--|--|--|
-| generateTeams | Generates 2 random teams à 6 player | User |
+| generateTeams | Generates 2 random teams of 6 players each | User |
 
 ## Map Generator
 | Command | Description | Permissions |
