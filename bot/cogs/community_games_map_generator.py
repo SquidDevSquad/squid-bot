@@ -1,10 +1,11 @@
-import discord
-
-from discord.ext import commands
-from helper.Helpers import *
-from random import randrange
 from random import randint
-import helper.GlobaleVariables as GlobaleVariables
+
+import discord
+from discord.ext import commands
+
+import GlobalVariables as GlobaleVariables
+from file.FileRepository import *
+
 
 class CommunityGamesMapGenerator(commands.Cog):
     def __init__(self, client):
@@ -12,7 +13,7 @@ class CommunityGamesMapGenerator(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        create_mapfile_if_doesnt_exist()
+        create_map_file_if_doesnt_exist()
 
     @commands.command(name="addMap")
     async def add_map_command(self, ctx, mapName):

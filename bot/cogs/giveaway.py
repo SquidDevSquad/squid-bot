@@ -1,15 +1,15 @@
-import discord
-import Config
-
-import helper.GlobaleVariables as GlobaleVariables
-from helper.Helpers import *
-from discord.ext import commands
 from random import randint
+
+from discord.ext import commands
+
+import GlobalVariables as GlobaleVariables
+from file.FileRepository import *
+
 
 class Giveaway(commands.Cog):
     def __init__(self, client):
         self.client = client
-    
+
     @commands.command(name="getGiveawayUser")
     async def get_giveaway_user_command(self, ctx):
         if not is_admin(ctx.author.id):
