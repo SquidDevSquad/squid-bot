@@ -13,7 +13,7 @@ class CommunityGamesMapGenerator(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        create_mapfile_if_doesnt_exist()
+        create_map_file_if_doesnt_exist()
 
     @commands.command(name="addMap")
     async def add_map_command(self, ctx, mapName):
