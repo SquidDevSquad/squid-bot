@@ -203,6 +203,8 @@ class CommunityGames(commands.Cog):
             return
 
         user_id = user.id
+        in_game_name = get_in_game_name_by_id(user_id)
+        GlobaleVariables.playersList.remove(in_game_name)
         delete_user_in_file(user_id)
         await ctx.send(ctx.author.mention + ' Successfully removed ' + user.name + ' from the list')
 
