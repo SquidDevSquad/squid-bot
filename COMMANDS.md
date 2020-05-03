@@ -29,7 +29,7 @@
 ## Team Generator
 | Command | Description | Permissions |
 |--|--|--|
-| generateTeams | Generates 2 random teams à 6 player | User |
+| generateTeams | Generates 2 random teams of 6 players each | User |
 
 ## Map Generator
 | Command | Description | Permissions |
