@@ -25,8 +25,12 @@ class CommunityGamesTeamGenerator(commands.Cog):
             await ctx.send('Not allowed to operate on this channel')
             return
 
-        if len(GlobalVariables.playersList) < 12:
-            await ctx.send(ctx.author.mention + ' Not enough player for 2 teams')
+        number_of_players = len(GlobalVariables.playersList)
+
+        if number_of_players < 12:
+            error_msg = get_not_enough_players_msg(number_of_players)
+            log.error(error_msg)
+            await ctx.send(ctx.author.mention + error_msg)
             return
 
         del GlobalVariables.alreadyUsedIndex[:]
@@ -34,9 +38,10 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
         self.fill_players_allowed_to_play()
 
-        numberOfPlayersAllowed = len(GlobalVariables.playersAllowedToPlay)
-        if numberOfPlayersAllowed < 12:
-            await ctx.send('NO U')
+        number_of_players_allowed = len(GlobalVariables.playersAllowedToPlay)
+        if number_of_players_allowed < 12:
+            error_msg = get_not_enough_players_msg(number_of_players_allowed)
+            await ctx.send(error_msg)
             return
 
         self.generate_teams()
@@ -44,15 +49,15 @@ class CommunityGamesTeamGenerator(commands.Cog):
         await ctx.send(embed=self.generate_team_embed_message(2, GlobalVariables.teams[1]))
 
     def generate_team(self):
-        numberOfPlayers = len(GlobalVariables.playersAllowedToPlay)
+        number_of_players = len(GlobalVariables.playersAllowedToPlay)
         team = list()
         x = 0
-        while (x < 6):
-            playerIndex = randrange(numberOfPlayers)
-            if playerIndex in GlobalVariables.alreadyUsedIndex:
+        while x < 6:
+            player_index = randrange(number_of_players)
+            if player_index in GlobalVariables.alreadyUsedIndex:
                 continue
-            GlobalVariables.alreadyUsedIndex.append(playerIndex)
-            team.append(GlobalVariables.playersAllowedToPlay[playerIndex])
+            GlobalVariables.alreadyUsedIndex.append(player_index)
+            team.append(GlobalVariables.playersAllowedToPlay[player_index])
             x += 1
         return team
 
@@ -60,8 +65,8 @@ class CommunityGamesTeamGenerator(commands.Cog):
         for x in range(0, 2):
             GlobalVariables.teams.append(self.generate_team())
 
-    def generate_team_embed_message(self, numberOfTeam, team):
-        embed = discord.Embed(title="Team " + str(numberOfTeam), color=0x00ff00)
+    def generate_team_embed_message(self, number_of_team, team):
+        embed = discord.Embed(title="Team " + str(number_of_team), color=0x00ff00)
         for x in range(0, len(team)):
             embed.add_field(name="Player " + str(x + 1) + ":", value=team[x], inline=True)
         return embed
@@ -147,3 +152,8 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
 def setup(client):
     client.add_cog(CommunityGamesTeamGenerator(client))
+
+
+def get_not_enough_players_msg(current_number_of_players):
+    return ' Not enough players for 2 teams. Currently have: {currentNumberOfPlayers}. ' \
+           'At least 12 players needed.'.format(currentNumberOfPlayers=current_number_of_players)
