@@ -41,34 +41,34 @@ class CommunityGamesMapGenerator(commands.Cog):
     async def get_random_map_command(self, ctx):
         maps = self.client.file_repository.get_maps_from_file()
 
-        if len(maps) == len(self.client.globale_variables.used_maps):
+        if len(maps) == len(self.client.global_variables.used_maps):
             await ctx.send("All maps are used up. You need to reset the maps first")
             return
 
         random_map = self.get_random_map(maps)
-        while random_map in self.client.globale_variables.used_maps:
+        while random_map in self.client.global_variables.used_maps:
             random_map = self.get_random_map(maps)
-        self.client.globale_variables.used_maps.append(random_map)
+        self.client.global_variables.used_maps.append(random_map)
         await ctx.send(random_map)
     
     @commands.command(name="resetMaps")
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def reset_maps_command(self, ctx):
-        del self.client.globale_variables.used_maps[:]
+        del self.client.global_variables.used_maps[:]
     
     @commands.command(name="getUsedMaps")
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def get_used_maps_command(self, ctx):
-        await ctx.send(self.client.globale_variables.used_maps)
+        await ctx.send(self.client.global_variables.used_maps)
     
     @commands.command(name="removeMap")
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def remove_map_command(self, ctx, map_name):
         self.client.file_repository.remove_map_from_list(map_name)
-        self.client.globale_variables.used_maps.remove(map_name)
+        self.client.global_variables.used_maps.remove(map_name)
         await ctx.send(ctx.author.mention + " " + map_name + " got removed from the list")
 
     @staticmethod

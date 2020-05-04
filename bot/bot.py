@@ -1,18 +1,18 @@
 import os
 
 from discord.ext import commands
-import Config
-from log import LoggerFactory
 
+import Config
 import decorators
-import globale_variables
 import file_repository
+import global_variables
+from log import LoggerFactory
 
 log = LoggerFactory.get_logger(__name__)
 
 client = commands.Bot(command_prefix=Config.COMMAND_PREFIX)
 
-client.globale_variables = globale_variables.GlobaleVariables()
+client.global_variables = global_variables.GlobalVariables()
 client.file_repository = file_repository.FileRepository()
 
 for filename in os.listdir('./cogs'):
