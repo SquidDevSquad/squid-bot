@@ -1,9 +1,10 @@
 from random import randint
-
 from discord.ext import commands
+import decorators
 
-import GlobalVariables as GlobaleVariables
-from file.FileRepository import *
+from log import LoggerFactory
+
+log = LoggerFactory.get_logger(__name__)
 
 
 class Giveaway(commands.Cog):
@@ -11,43 +12,32 @@ class Giveaway(commands.Cog):
         self.client = client
 
     @commands.command(name="getGiveawayUser")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
     async def get_giveaway_user_command(self, ctx):
-        if not is_admin(ctx.author.id):
-            await ctx.send('You don\'t have the permissions to use this command')
-            return
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
         channel = self.client.get_channel(Config.GIVEAWAY_VOICE_CHANNEL)
         channel_members = channel.members
-        del GlobaleVariables.userForGiveaway[:]
+        log.debug('Empty the list of participants')
+        del self.client.globale_variables.user_for_giveaway[:]
 
+        log.debug('Add user to [user_for_giveaway]')
         for member in channel_members:
-            GlobaleVariables.userForGiveaway.append(member.id)
+            self.client.globale_variables.user_for_giveaway.append(member.id)
         
-        await ctx.send('Loaded ' + str(len(GlobaleVariables.userForGiveaway)) + ' user for the giveaway')
-    
+        await ctx.send('Loaded ' + str(len(self.client.globale_variables.user_for_giveaway)) + ' user for the giveaway')
+
     @commands.command(name="getGiveawayWinner")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
     async def get_giveaway_winner_command(self, ctx):
-        if not is_admin(ctx.author.id):
-            await ctx.send('You don\'t have the permissions to use this command')
-            return
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
         # get a random number between 0 and the amount of user -1
-        randomIndex = randint(0, len(GlobaleVariables.userForGiveaway) - 1)
+        random_index = randint(0, len(self.client.globale_variables.user_for_giveaway) - 1)
         # create a user object out of the drawn id
-        user = self.client.get_user(GlobaleVariables.userForGiveaway[randomIndex])
+        user = self.client.get_user(self.client.globale_variables.user_for_giveaway[random_index])
         # remove the player from the giveaway list
-        GlobaleVariables.userForGiveaway.remove(GlobaleVariables.userForGiveaway[randomIndex])
+        self.client.globale_variables.user_for_giveaway.remove(self.client.globale_variables.user_for_giveaway[random_index])
         # announce the winner
         await ctx.send(user.mention + ' Won!')
-        
-
-
 
 
 def setup(client):
