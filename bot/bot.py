@@ -1,4 +1,5 @@
 import os
+from os.path import splitext
 
 from discord.ext import commands
 
@@ -16,9 +17,10 @@ client.global_variables = global_variables.GlobalVariables()
 client.file_repository = file_repository.FileRepository()
 
 for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        log.info('Load: ' + filename)
-        client.load_extension(f'cogs.{filename[:-3]}')
+    file = splitext(filename)
+    if file[1] == '.py':
+        log.info('Load: ' + file[0])
+        client.load_extension(f'cogs.{file[0]}')
 
 
 @client.event
