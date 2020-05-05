@@ -19,18 +19,20 @@ class CommunityGamesMapGenerator(commands.Cog):
     @decorators.only_allowed_channels
     async def add_map_command(self, ctx, map_name):
         self.client.file_repository.add_map_to_file(map_name)
-        await ctx.send(ctx.author.mention + ' ' + map_name + " was registered to the pool.")
-    
+        await ctx.send(
+            ctx.author.mention + " " + map_name + " was registered to the pool."
+        )
+
     @commands.command(name="getMaps")
     @decorators.only_allowed_channels
     async def get_maps_command(self, ctx):
         maps = self.client.file_repository.get_maps_from_file()
 
         if len(maps) == 0:
-            await ctx.send('No maps to show')
+            await ctx.send("No maps to show")
             return
 
-        embed = discord.Embed(title="Maps", color=0x12ff32)
+        embed = discord.Embed(title="Maps", color=0x12FF32)
         for x in range(0, len(maps)):
             embed.add_field(name="Map " + str(x + 1) + ":", value=maps[x])
         await ctx.send(embed=embed)
@@ -50,26 +52,28 @@ class CommunityGamesMapGenerator(commands.Cog):
             random_map = self.get_random_map(maps)
         self.client.global_variables.used_maps.append(random_map)
         await ctx.send(random_map)
-    
+
     @commands.command(name="resetMaps")
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def reset_maps_command(self, ctx):
         del self.client.global_variables.used_maps[:]
-    
+
     @commands.command(name="getUsedMaps")
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def get_used_maps_command(self, ctx):
         await ctx.send(self.client.global_variables.used_maps)
-    
+
     @commands.command(name="removeMap")
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def remove_map_command(self, ctx, map_name):
         self.client.file_repository.remove_map_from_list(map_name)
         self.client.global_variables.used_maps.remove(map_name)
-        await ctx.send(ctx.author.mention + " " + map_name + " got removed from the list")
+        await ctx.send(
+            ctx.author.mention + " " + map_name + " got removed from the list"
+        )
 
     @staticmethod
     def get_random_map(maps):

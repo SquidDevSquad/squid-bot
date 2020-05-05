@@ -16,11 +16,11 @@ client = commands.Bot(command_prefix=Config.COMMAND_PREFIX)
 client.global_variables = global_variables.GlobalVariables()
 client.file_repository = file_repository.FileRepository()
 
-for filename in os.listdir('./cogs'):
+for filename in os.listdir("./cogs"):
     file = splitext(filename)
-    if file[1] == '.py':
-        log.info('Load: ' + file[0])
-        client.load_extension(f'cogs.{file[0]}')
+    if file[1] == ".py":
+        log.info("Load: " + file[0])
+        client.load_extension(f"cogs.{file[0]}")
 
 
 @client.event
@@ -31,30 +31,30 @@ async def on_ready():
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send('Please fill in all required arguments')
+        await ctx.send("Please fill in all required arguments")
         return
 
 
 @client.command(help="Loads an extension")
 @decorators.is_admin
 async def load(ctx, extension):
-    log.info('Load: ' + extension)
-    client.load_extension(f'cogs.{extension}')
+    log.info("Load: " + extension)
+    client.load_extension(f"cogs.{extension}")
 
 
 @client.command(help="Unloads an extension")
 @decorators.is_admin
 async def unload(ctx, extension):
-    log.info('Unload: ' + extension)
-    client.unload_extension(f'cogs.{extension}')
+    log.info("Unload: " + extension)
+    client.unload_extension(f"cogs.{extension}")
 
 
 @client.command(help="Reloads an extension")
 @decorators.is_admin
 async def reload(ctx, extension):
-    log.info('Reload: ' + extension)
-    client.unload_extension(f'cogs.{extension}')
-    client.load_extension(f'cogs.{extension}')
+    log.info("Reload: " + extension)
+    client.unload_extension(f"cogs.{extension}")
+    client.load_extension(f"cogs.{extension}")
 
 
 client.run(Config.DISCORD_TOKEN)
