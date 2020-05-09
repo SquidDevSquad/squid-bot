@@ -1,51 +1,60 @@
+import os
+from os.path import splitext
+
 from discord.ext import commands
 
-from file.FileRepository import *
+import Config
+import decorators
+import file_repository
+import global_variables
 from log import LoggerFactory
 
 log = LoggerFactory.get_logger(__name__)
 
 client = commands.Bot(command_prefix=Config.COMMAND_PREFIX)
 
-for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        log.info('Load: ' + filename)
-        client.load_extension(f'cogs.{filename[:-3]}')
+client.global_variables = global_variables.GlobalVariables()
+client.file_repository = file_repository.FileRepository()
+
+for filename in os.listdir("./cogs"):
+    file = splitext(filename)
+    if file[1] == ".py":
+        log.info("Load: " + file[0])
+        client.load_extension(f"cogs.{file[0]}")
 
 
 @client.event
 async def on_ready():
     log.info("Bot started")
 
+
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send('Please fill in all required arguments')
+        await ctx.send("Please fill in all required arguments")
         return
 
-@client.command(description="Loads an extension")
+
+@client.command(help="Loads an extension")
+@decorators.is_admin
 async def load(ctx, extension):
-    if not is_admin(ctx.author.id):
-        await ctx.send('You don\'t have the permissions to use this command')
-        return
-    log.info('Load: ' + extension)
-    client.load_extension(f'cogs.{extension}')
+    log.info("Load: " + extension)
+    client.load_extension(f"cogs.{extension}")
 
-@client.command(description="Unloads an extension")
+
+@client.command(help="Unloads an extension")
+@decorators.is_admin
 async def unload(ctx, extension):
-    if not is_admin(ctx.author.id):
-        await ctx.send('You don\'t have the permissions to use this command')
-        return
-    log.info('Unload: ' + extension)
-    client.unload_extension(f'cogs.{extension}')
+    log.info("Unload: " + extension)
+    client.unload_extension(f"cogs.{extension}")
 
-@client.command(description="Reloads an extension")
+
+@client.command(help="Reloads an extension")
+@decorators.is_admin
 async def reload(ctx, extension):
-    if not is_admin(ctx.author.id):
-        await ctx.send('You don\'t have the permissions to use this command')
-        return
-    log.info('Reload: ' + extension)
-    client.unload_extension(f'cogs.{extension}')
-    client.load_extension(f'cogs.{extension}')
+    log.info("Reload: " + extension)
+    client.unload_extension(f"cogs.{extension}")
+    client.load_extension(f"cogs.{extension}")
+
 
 client.run(Config.DISCORD_TOKEN)

@@ -3,8 +3,7 @@ from random import randint
 import discord
 from discord.ext import commands
 
-import GlobalVariables as GlobaleVariables
-from file.FileRepository import *
+import decorators
 
 
 class CommunityGamesMapGenerator(commands.Cog):
@@ -13,98 +12,74 @@ class CommunityGamesMapGenerator(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        create_map_file_if_doesnt_exist()
+        self.client.file_repository.create_map_file_if_doesnt_exist()
 
     @commands.command(name="addMap")
-    async def add_map_command(self, ctx, mapName):
-        if not is_admin(ctx.author.id):
-            await ctx.send('You don\'t have the permissions to use this command')
-            return
-        if is_map_already_registered(mapName):
-            await ctx.send(ctx.author.mention + " the map " + mapName + " is already registered.")
-            return
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
+    @decorators.is_admin
+    @decorators.only_allowed_channels
+    async def add_map_command(self, ctx, map_name):
+        self.client.file_repository.add_map_to_file(map_name)
+        await ctx.send(
+            ctx.author.mention + " " + map_name + " was registered to the pool."
+        )
 
-        add_map_to_file(mapName)
-        await ctx.send(ctx.author.mention + mapName + " was registered to the pool.")
-    
     @commands.command(name="getMaps")
+    @decorators.only_allowed_channels
     async def get_maps_command(self, ctx):
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
-        maps = get_maps_from_file()
+        maps = self.client.file_repository.get_maps_from_file()
 
         if len(maps) == 0:
-            await ctx.send('No maps to show')
+            await ctx.send("No maps to show")
             return
 
-        embed = discord.Embed(title="Maps", color=0x12ff32)
+        embed = discord.Embed(title="Maps", color=0x12FF32)
         for x in range(0, len(maps)):
             embed.add_field(name="Map " + str(x + 1) + ":", value=maps[x])
         await ctx.send(embed=embed)
 
     @commands.command(name="getRandomMap")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
     async def get_random_map_command(self, ctx):
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
-        maps = get_maps_from_file()
+        maps = self.client.file_repository.get_maps_from_file()
 
-        if (len(maps) == len(GlobaleVariables.usedMaps)):
+        if len(maps) == len(self.client.global_variables.used_maps):
             await ctx.send("All maps are used up. You need to reset the maps first")
             return
 
-        map = self.get_random_map(maps)
-        while map in GlobaleVariables.usedMaps:
-            map = self.get_random_map(maps)
-        GlobaleVariables.usedMaps.append(map)
-        await ctx.send(map)
-    
+        random_map = self.get_random_map(maps)
+        while random_map in self.client.global_variables.used_maps:
+            random_map = self.get_random_map(maps)
+        self.client.global_variables.used_maps.append(random_map)
+        await ctx.send(random_map)
+
     @commands.command(name="resetMaps")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
     async def reset_maps_command(self, ctx):
-        if not is_admin(ctx.author.id):
-            await ctx.send('You don\'t have the permissions to use this command')
-            return
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
-        del GlobaleVariables.usedMaps[:]
-    
+        del self.client.global_variables.used_maps[:]
+
     @commands.command(name="getUsedMaps")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
     async def get_used_maps_command(self, ctx):
-        if not is_admin(ctx.author.id):
-            await ctx.send('You don\'t have the permissions to use this command')
-            return
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
-        await ctx.send(GlobaleVariables.usedMaps)
-    
+        await ctx.send(self.client.global_variables.used_maps)
+
     @commands.command(name="removeMap")
-    async def remove_map_command(self, ctx, mapName):
-        if not is_admin(ctx.author.id):
-            await ctx.send('You don\'t have the permissions to use this command')
-            return
-        channel = ctx.message.channel.id
-        if not can_operate_in_channel(channel, Config.ALLOWED_CHANNEL):
-            await ctx.send('Not allowed to operate here')
-            return
-        remove_map_from_list(mapName)
-        GlobaleVariables.usedMaps.remove(mapName)
-        await ctx.send(ctx.author.mention + " " + mapName + " got removed from the list")
-        
-    
-    def get_random_map(self, maps):
-        randomIndex = randint(0, len(maps) - 1)
-        return maps[randomIndex]
+    @decorators.is_admin
+    @decorators.only_allowed_channels
+    async def remove_map_command(self, ctx, map_name):
+        self.client.file_repository.remove_map_from_list(map_name)
+        self.client.global_variables.used_maps.remove(map_name)
+        await ctx.send(
+            ctx.author.mention + " " + map_name + " got removed from the list"
+        )
+
+    @staticmethod
+    def get_random_map(maps):
+        random_index = randint(0, len(maps) - 1)
+        return maps[random_index]
+
 
 def setup(client):
     client.add_cog(CommunityGamesMapGenerator(client))
