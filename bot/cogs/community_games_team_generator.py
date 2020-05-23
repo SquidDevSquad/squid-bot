@@ -81,7 +81,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
         for x in range(0, 2):
             self.client.global_variables.teams.append(self.generate_team())
 
-    @staticmethod
+
     def generate_team_embed_message(self, number_of_team, team):
         embed = discord.Embed(title="Team " + str(number_of_team), color=0x00FF00)
         for x in range(0, len(team)):
