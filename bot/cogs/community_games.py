@@ -38,7 +38,7 @@ class CommunityGames(commands.Cog):
 
         self.client.global_variables.registration_opened = True
         log.info("Activated registration for community games")
-        await ctx.send(ctx.author.mention + " Registrations are opened")
+        await ctx.send(ctx.author.mention + " Registrations are open")
 
     @commands.command(name="close")
     @decorators.is_admin
