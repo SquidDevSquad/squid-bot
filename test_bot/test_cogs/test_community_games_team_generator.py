@@ -54,9 +54,16 @@ def find_player_by_id(player_id, players):
     return False
 
 
+ctx_mock = MagicMock()
+
+
 class TestCommunityGamesTeamGenerator(TestCase):
+
+    def setUp(self) -> None:
+        ctx_mock.author.id = Config.ALLOWED_USER_TO_ADMIN_COMMANDS[0]
+        super().setUp()
+
     def test_generate_teams_command_no_allowed_channels(self):
-        ctx_mock = MagicMock()
         ctx_mock.message.channel.id = "Some channel"
         Config.ALLOWED_CHANNEL = []
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(None)
@@ -72,7 +79,6 @@ class TestCommunityGamesTeamGenerator(TestCase):
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
         voice_channel_mock.members = generate_players_list(11)
 
-        ctx_mock = MagicMock()
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
         ctx_mock.guild.voice_channels = [voice_channel_mock]
@@ -92,7 +98,6 @@ class TestCommunityGamesTeamGenerator(TestCase):
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
         voice_channel_mock.members = generate_players_list(12)
 
-        ctx_mock = MagicMock()
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
         ctx_mock.guild.voice_channels = [voice_channel_mock]
@@ -119,7 +124,6 @@ class TestCommunityGamesTeamGenerator(TestCase):
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
         voice_channel_mock.members = generate_players_list(22)
 
-        ctx_mock = MagicMock()
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
         ctx_mock.guild.voice_channels = [voice_channel_mock]
@@ -148,7 +152,6 @@ class TestCommunityGamesTeamGenerator(TestCase):
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
         voice_channel_mock.members = generate_players_list(22)
 
-        ctx_mock = MagicMock()
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
         ctx_mock.guild.voice_channels = [voice_channel_mock]
@@ -175,9 +178,3 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertFalse(contains_duplicates(team1))
         self.assertFalse(contains_duplicates(bench))
         self.assertEqual(0, len(voice_channel_mock.members))
-
-    def test_generate_team_embed_message(self):
-        self.fail()
-
-    def test_fill_players_allowed_to_play(self):
-        self.fail()
