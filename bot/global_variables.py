@@ -4,6 +4,8 @@ class GlobalVariables:
         self.players_allowed_to_play = list()
         self.already_used_index = list()
         self.teams = list()
+        self.teams.append(list())
+        self.teams.append(list())
         self.bench = list()
         self.used_maps = list()
         self.registration_opened = False
