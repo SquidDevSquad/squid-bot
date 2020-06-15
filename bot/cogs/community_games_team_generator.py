@@ -1,4 +1,3 @@
-from random import randint
 from random import randrange
 
 import discord
@@ -22,12 +21,8 @@ class CommunityGamesTeamGenerator(commands.Cog):
     @commands.command(name="generateTeams")
     @decorators.is_admin
     @decorators.only_allowed_channels
+    @decorators.is_registration_open
     async def generate_teams_command(self, ctx):
-        if not self.client.global_variables.registration_opened:
-            log.debug("Registrations are not opened")
-            await ctx.send(ctx.author.mention + " Registrations are not opened yet")
-            return
-
         log.info("Generating teams...")
         voice_channel = await self.find_community_games_voice_channel(ctx)
         members = voice_channel.members
@@ -105,134 +100,134 @@ class CommunityGamesTeamGenerator(commands.Cog):
             )
         return embed
 
-    def fill_players_allowed_to_play(self):
-        log.debug("Start filling allowed players")
-        if len(self.client.global_variables.bench) > 0:
-            log.debug("Already benched players")
-            # Get amount of player who have to get benched
-            players_to_bench = len(self.client.global_variables.bench)
-            log.debug("Amount of player to bench: " + str(players_to_bench))
-
-            if len(self.client.global_variables.players_allowed_to_play) < 12:
-                log.debug("Less than 12 players")
-                missing_player = 12 - len(
-                    self.client.global_variables.players_allowed_to_play
-                )
-                log.debug("Amount of missing player: " + str(missing_player))
-                players_to_bench = players_to_bench - missing_player
-                log.debug("New amount of player to bench: " + str(players_to_bench))
-
-            log.debug("Create temp bench")
-            temp_bench = list()
-            log.debug("Create temp used index")
-            temp_used_index = list()
-
-            log.debug("Start filling temp bench")
-            x = 0
-            while x < players_to_bench:
-                player_index_to_remove = randint(
-                    0, len(self.client.global_variables.players_allowed_to_play) - 1
-                )
-                log.debug("Try to bench player index: " + str(player_index_to_remove))
-                # Redraw if user is already in temp bench
-                if player_index_to_remove in temp_used_index:
-                    log.debug("Index already used")
-                    continue
-
-                player_name = self.client.global_variables.players_allowed_to_play[
-                    player_index_to_remove
-                ]
-
-                if player_name not in self.client.global_variables.players_list:
-                    log.debug("Player not registered anymore: " + player_name)
-                    continue
-
-                # Add index to used indexes
-                log.debug("Add player index to temp used index")
-                temp_used_index.append(player_index_to_remove)
-                # Add player to the temporary bench list
-                log.debug("Add player name to temp bench")
-                temp_bench.append(
-                    self.client.global_variables.players_allowed_to_play[
-                        player_index_to_remove
-                    ]
-                )
-                x = x + 1
-
-            # Empty list of benched players
-            log.debug("Empty global variable [bench]")
-            del self.client.global_variables.bench[:]
-            # Removed all indexes which were used
-            log.debug("Empty variable [temp_used_index]")
-            del temp_used_index[:]
-            # Empty list of player who are allowed to play
-            log.debug("Empty global variable [players_allowed_to_play]")
-            del self.client.global_variables.players_allowed_to_play[:]
-
-            players_allowed_to_play_amount = len(
-                self.client.global_variables.players_list
-            ) - len(temp_bench)
-            log.debug(
-                "Amount of players allowed to play: "
-                + str(players_allowed_to_play_amount)
-            )
-
-            log.debug("Start filling allowed player")
-            x = 0
-            while x < players_allowed_to_play_amount:
-                allowed_to_play_index = randint(
-                    0, len(self.client.global_variables.players_list) - 1
-                )
-                log.debug("Try to add player index: " + str(allowed_to_play_index))
-                if allowed_to_play_index in temp_used_index:
-                    log.debug("Index already used")
-                    continue
-
-                player_name = self.client.global_variables.players_list[
-                    allowed_to_play_index
-                ]
-                if player_name in self.client.global_variables.bench:
-                    log.debug("Player already benched")
-                    continue
-
-                log.debug("Add player index to temp used index")
-                temp_used_index.append(allowed_to_play_index)
-                log.debug("Add player to the allowed to play list: " + player_name)
-                self.client.global_variables.players_allowed_to_play.append(player_name)
-                x = x + 1
-
-            log.debug("Fill in benched with temp_bench")
-            for benched in temp_bench:
-                self.client.global_variables.bench.append(benched)
-
-            log.debug("Empty variable [temp_bench]")
-            del temp_bench[:]
-
-        else:
-            log.debug("No benched player")
-            players_to_bench = len(self.client.global_variables.players_list) - 12
-            log.debug("Amount of player to bench: " + str(players_to_bench))
-            used_index = list()
-            x = 0
-            log.debug("Start benching player")
-            while x < players_to_bench:
-                player_to_remove_index = randrange(players_to_bench)
-                if player_to_remove_index in used_index:
-                    log.debug("Index already used")
-                    continue
-                self.client.global_variables.bench.append(
-                    self.client.global_variables.players_list[player_to_remove_index]
-                )
-                used_index.append(player_to_remove_index)
-                x += 1
-            log.debug("Start adding allowed player")
-            for x in range(0, len(self.client.global_variables.players_list)):
-                if x in used_index:
-                    log.debug("Index already used")
-                    continue
-                self.client.global_variables.players_allowed_to_play.append(
-                    self.client.global_variables.players_list[x]
-                )
+    # def fill_players_allowed_to_play(self):
+    #     log.debug("Start filling allowed players")
+    #     if len(self.client.global_variables.bench) > 0:
+    #         log.debug("Already benched players")
+    #         # Get amount of player who have to get benched
+    #         players_to_bench = len(self.client.global_variables.bench)
+    #         log.debug("Amount of player to bench: " + str(players_to_bench))
+    #
+    #         if len(self.client.global_variables.players_allowed_to_play) < 12:
+    #             log.debug("Less than 12 players")
+    #             missing_player = 12 - len(
+    #                 self.client.global_variables.players_allowed_to_play
+    #             )
+    #             log.debug("Amount of missing player: " + str(missing_player))
+    #             players_to_bench = players_to_bench - missing_player
+    #             log.debug("New amount of player to bench: " + str(players_to_bench))
+    #
+    #         log.debug("Create temp bench")
+    #         temp_bench = list()
+    #         log.debug("Create temp used index")
+    #         temp_used_index = list()
+    #
+    #         log.debug("Start filling temp bench")
+    #         x = 0
+    #         while x < players_to_bench:
+    #             player_index_to_remove = randint(
+    #                 0, len(self.client.global_variables.players_allowed_to_play) - 1
+    #             )
+    #             log.debug("Try to bench player index: " + str(player_index_to_remove))
+    #             # Redraw if user is already in temp bench
+    #             if player_index_to_remove in temp_used_index:
+    #                 log.debug("Index already used")
+    #                 continue
+    #
+    #             player_name = self.client.global_variables.players_allowed_to_play[
+    #                 player_index_to_remove
+    #             ]
+    #
+    #             if player_name not in self.client.global_variables.players_list:
+    #                 log.debug("Player not registered anymore: " + player_name)
+    #                 continue
+    #
+    #             # Add index to used indexes
+    #             log.debug("Add player index to temp used index")
+    #             temp_used_index.append(player_index_to_remove)
+    #             # Add player to the temporary bench list
+    #             log.debug("Add player name to temp bench")
+    #             temp_bench.append(
+    #                 self.client.global_variables.players_allowed_to_play[
+    #                     player_index_to_remove
+    #                 ]
+    #             )
+    #             x = x + 1
+    #
+    #         # Empty list of benched players
+    #         log.debug("Empty global variable [bench]")
+    #         del self.client.global_variables.bench[:]
+    #         # Removed all indexes which were used
+    #         log.debug("Empty variable [temp_used_index]")
+    #         del temp_used_index[:]
+    #         # Empty list of player who are allowed to play
+    #         log.debug("Empty global variable [players_allowed_to_play]")
+    #         del self.client.global_variables.players_allowed_to_play[:]
+    #
+    #         players_allowed_to_play_amount = len(
+    #             self.client.global_variables.players_list
+    #         ) - len(temp_bench)
+    #         log.debug(
+    #             "Amount of players allowed to play: "
+    #             + str(players_allowed_to_play_amount)
+    #         )
+    #
+    #         log.debug("Start filling allowed player")
+    #         x = 0
+    #         while x < players_allowed_to_play_amount:
+    #             allowed_to_play_index = randint(
+    #                 0, len(self.client.global_variables.players_list) - 1
+    #             )
+    #             log.debug("Try to add player index: " + str(allowed_to_play_index))
+    #             if allowed_to_play_index in temp_used_index:
+    #                 log.debug("Index already used")
+    #                 continue
+    #
+    #             player_name = self.client.global_variables.players_list[
+    #                 allowed_to_play_index
+    #             ]
+    #             if player_name in self.client.global_variables.bench:
+    #                 log.debug("Player already benched")
+    #                 continue
+    #
+    #             log.debug("Add player index to temp used index")
+    #             temp_used_index.append(allowed_to_play_index)
+    #             log.debug("Add player to the allowed to play list: " + player_name)
+    #             self.client.global_variables.players_allowed_to_play.append(player_name)
+    #             x = x + 1
+    #
+    #         log.debug("Fill in benched with temp_bench")
+    #         for benched in temp_bench:
+    #             self.client.global_variables.bench.append(benched)
+    #
+    #         log.debug("Empty variable [temp_bench]")
+    #         del temp_bench[:]
+    #
+    #     else:
+    #         log.debug("No benched player")
+    #         players_to_bench = len(self.client.global_variables.players_list) - 12
+    #         log.debug("Amount of player to bench: " + str(players_to_bench))
+    #         used_index = list()
+    #         x = 0
+    #         log.debug("Start benching player")
+    #         while x < players_to_bench:
+    #             player_to_remove_index = randrange(players_to_bench)
+    #             if player_to_remove_index in used_index:
+    #                 log.debug("Index already used")
+    #                 continue
+    #             self.client.global_variables.bench.append(
+    #                 self.client.global_variables.players_list[player_to_remove_index]
+    #             )
+    #             used_index.append(player_to_remove_index)
+    #             x += 1
+    #         log.debug("Start adding allowed player")
+    #         for x in range(0, len(self.client.global_variables.players_list)):
+    #             if x in used_index:
+    #                 log.debug("Index already used")
+    #                 continue
+    #             self.client.global_variables.players_allowed_to_play.append(
+    #                 self.client.global_variables.players_list[x]
+    #             )
 
     @staticmethod
     def get_not_enough_players_msg(current_number_of_players):

@@ -16,6 +16,40 @@ class CommunityGames(commands.Cog):
     async def on_ready(self):
         self.client.file_repository.create_player_file_if_doesnt_exist()
 
+    # TODO Mor: Add tests
+    @commands.command(name="addToBench")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
+    @decorators.is_registration_open
+    async def add_to_bench_command(self, ctx, user: discord.Member):
+        log.info("Adding %s to bench...", user.name)
+        self.client.global_variables.bench.append(user)
+        if user.nick is not None:
+            user_name = user.nick
+        else:
+            user_name = user.name
+        await ctx.send(ctx.author.mention + " User `" + user_name + "` has been added to the bench")
+
+    # TODO Mor: Add tests
+    @commands.command(name="removeFromBench")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
+    @decorators.is_registration_open
+    async def remove_from_bench_command(self, ctx, user: discord.Member):
+        log.info("Removing %s from bench...", user.name)
+        if user in self.client.global_variables.bench:
+            self.client.global_variables.bench.remove(user)
+            await ctx.send(ctx.author.mention + " User `" + user.name + "` has been removed from the bench")
+        else:
+            await ctx.send(ctx.author.mention + " User `" + user.name + "` is not in the bench")
+
+    @commands.command(name="showBench")
+    @decorators.is_admin
+    @decorators.only_allowed_channels
+    async def show_bench_command(self, ctx):
+        embed = await self.generate_members_in_bench_msg(self.client.global_variables.bench)
+        await ctx.send(embed=embed)
+
     @commands.command(name="open")
     @decorators.is_admin
     @decorators.only_allowed_channels
@@ -43,11 +77,8 @@ class CommunityGames(commands.Cog):
     @commands.command(name="close")
     @decorators.is_admin
     @decorators.only_allowed_channels
+    @decorators.is_registration_open
     async def close_registration_command(self, ctx):
-        if not self.client.global_variables.registration_opened:
-            log.debug("Registration is already closed")
-            await ctx.send(ctx.author.mention + " Registrations are already closed")
-            return
         log.debug("Closed registration for community games")
         self.client.global_variables.registration_opened = False
         await ctx.send(ctx.author.mention + " Registrations are closed")
@@ -82,8 +113,8 @@ class CommunityGames(commands.Cog):
     @decorators.only_allowed_channels
     async def add_participant_command(self, ctx):
         if not self.client.global_variables.registration_opened:
-            log.debug("Registrations are not opened")
-            await ctx.send(ctx.author.mention + " Registrations are not opened yet")
+            log.debug("Registrations are not open")
+            await ctx.send(ctx.author.mention + " Registrations are not open yet")
             return
 
         player_name = self.client.file_repository.get_in_game_name_by_id(ctx.author.id)
@@ -256,6 +287,13 @@ class CommunityGames(commands.Cog):
         await ctx.send(
             ctx.author.mention + " Successfully removed " + user.name + " from the list"
         )
+
+    @staticmethod
+    async def generate_members_in_bench_msg(bench):
+        member_names = '\n'.join([m.name for m in bench])
+        return discord.Embed(title="{} member(s) in {}".format(len(bench), "Bench"),
+                             description=member_names,
+                             color=discord.Color.blue())
 
 
 def setup(client):
