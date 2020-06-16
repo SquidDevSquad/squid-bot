@@ -8,9 +8,6 @@ from log import LoggerFactory
 log = LoggerFactory.get_logger(__name__)
 
 
-# TODO Mor: Add new commands to COMMANDS.md and remove old ones
-
-
 class CommunityGames(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -45,7 +42,6 @@ class CommunityGames(commands.Cog):
         await ctx.send(ctx.author.mention + " Registrations are closed")
 
     # TODO Mor: Add tests
-
     @commands.command(help="Add a player to the bench", name="addToBench")
     @decorators.is_admin
     @decorators.only_allowed_channels
@@ -69,7 +65,6 @@ class CommunityGames(commands.Cog):
             await ctx.send(ctx.author.mention + " User `" + user.name + "` is not in the bench")
 
     @commands.command(help="Show a list of players in bench", name="showBench")
-    @decorators.is_admin
     @decorators.only_allowed_channels
     async def show_bench_command(self, ctx):
         embed = await self.generate_members_in_bench_msg(self.client.global_variables.bench)

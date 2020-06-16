@@ -1,8 +1,5 @@
 class GlobalVariables:
     def __init__(self):
-        self.players_list = list()
-        self.players_allowed_to_play = list()
-        self.already_used_index = list()
         self.teams = list()
         self.teams.append(list())
         self.teams.append(list())

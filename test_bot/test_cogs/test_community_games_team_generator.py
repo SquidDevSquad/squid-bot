@@ -3,6 +3,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 
 import Config as Config
+import UserUtils
 from cogs import community_games_team_generator
 
 
@@ -34,7 +35,7 @@ def contains_duplicates(lst):
 def verify_benched_players_play(benched_players, team0, team1):
     for benched_player in benched_players:
         player_id = benched_player.id
-        if not find_player_by_id(player_id, team0) and not find_player_by_id(player_id, team1):
+        if not UserUtils.find(player_id, team0) and not UserUtils.find(player_id, team1):
             return False
     return True
 
@@ -42,16 +43,9 @@ def verify_benched_players_play(benched_players, team0, team1):
 def verify_bench_does_not_contain_players(bench, team0, team1):
     for benched_player in bench:
         player_id = benched_player.id
-        if find_player_by_id(player_id, team0) or find_player_by_id(player_id, team1):
+        if UserUtils.find(player_id, team0) or UserUtils.find(player_id, team1):
             return False
     return True
-
-
-def find_player_by_id(player_id, players):
-    for player in players:
-        if player.id == player_id:
-            return True
-    return False
 
 
 ctx_mock = MagicMock()
