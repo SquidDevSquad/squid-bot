@@ -11,7 +11,8 @@ log = LoggerFactory.get_logger(__name__)
 
 
 def print_players(players):
-    return ",".join([x.name for x in players])
+    if len(players) > 0:
+        return ",".join([x.name for x in players])
 
 
 class CommunityGamesTeamGenerator(commands.Cog):
@@ -23,6 +24,11 @@ class CommunityGamesTeamGenerator(commands.Cog):
     @decorators.only_allowed_channels
     @decorators.is_registration_open
     async def generate_teams_command(self, ctx):
+        log.debug("Empty global variable [teams]")
+        self.client.global_variables.teams = list()
+        self.client.global_variables.teams.append(list())
+        self.client.global_variables.teams.append(list())
+
         log.info("Generating teams...")
         voice_channel = await self.find_community_games_voice_channel(ctx)
         members = voice_channel.members
@@ -42,7 +48,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
         self.remove_benched_players_from_general_list(bench, members)
         log.info("Adding previously benched players to teams:%s", print_players(bench))
         self.generate_teams(bench)
-        log.info("Adding player from players pool to teams:%s", print_players(members))
+        log.info("Adding players from players pool to teams:%s", print_players(members))
         self.generate_teams(members)
 
         log.info("Adding unselected players to bench:%s", print_players(members))
@@ -68,6 +74,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @staticmethod
     async def generate_members_in_channel_msg(members, num_of_players, voice_channel_name):
+        # TODO Mor: Fix using either nick or name not only name
         member_names = '\n'.join([x.name for x in members])
         return discord.Embed(title="{} member(s) in {}".format(num_of_players, voice_channel_name),
                              description=member_names,
@@ -82,8 +89,9 @@ class CommunityGamesTeamGenerator(commands.Cog):
             members.remove(member)
 
     def generate_teams(self, players):
-        for x in range(2):
-            self.generate_team(players, self.client.global_variables.teams[x])
+        if len(players) > 0:
+            for x in range(2):
+                self.generate_team(players, self.client.global_variables.teams[x])
 
     @staticmethod
     def generate_team_embed_message(number_of_team, team):
