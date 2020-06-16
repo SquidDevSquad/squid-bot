@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 
 import Config as Config
+import UserUtils
 import decorators
 from log import LoggerFactory
 
@@ -74,8 +75,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @staticmethod
     async def generate_members_in_channel_msg(members, num_of_players, voice_channel_name):
-        # TODO Mor: Fix using either nick or name not only name
-        member_names = '\n'.join([x.name for x in members])
+        member_names = '\n'.join([UserUtils.get_nick_or_name(m) for m in members])
         return discord.Embed(title="{} member(s) in {}".format(num_of_players, voice_channel_name),
                              description=member_names,
                              color=discord.Color.blue())
