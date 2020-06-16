@@ -18,3 +18,6 @@ If you are using Docker to test or use the bot, you should first build the image
 When the image is built you can start the container with  
 `docker run --rm -v $PWD/bot:/app/ -it discord-bot bash`  
 If you are on Windows you need to adjust the path to the bot folder. But i recommend to use WSL on Windows.
+
+## How to use?
+See the list of [Commands](COMMANDS.md)
