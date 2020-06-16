@@ -24,7 +24,7 @@
 ## Team Generator
 | Command | Description | Permissions |
 |--|--|--|
-| generateTeams | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation | User |
+| generateTeams | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation | Admin |
 
 ## Map Generator
 | Command | Description | Permissions |
