@@ -1,10 +1,20 @@
 # Changelog
+## Version 1.3.0
+## 2020-06-17
+**Major release**:
+* Refactor team generation to work with voice channel members without relying on files
+* Remove lots of unneeded code
+
+## Version 1.2.0
+## 2020-05-09
+- Nothing new added.
+- Refactored the code a lot.
 
 ## Version 1.1.2
 ## 2020-05-03
 ### Added
-- Unit tests
-- Logging infrastructure
+* Unit tests
+* Logging infrastructure
 ### Fixed
 - Bug of duplicate registered user
 

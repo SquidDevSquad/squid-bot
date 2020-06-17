@@ -2,6 +2,7 @@ from random import randint
 
 from discord.ext import commands
 
+import Config
 import decorators
 from log import LoggerFactory
 

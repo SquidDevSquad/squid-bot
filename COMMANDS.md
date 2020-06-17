@@ -17,19 +17,14 @@
 |--|--|--|
 | open  | Opens the registration for the community games | Admin |
 | close | Closes the registration for the community games | Admin |
-| add | Adds the current user to the pool of players for the community games | User |
-| remove | Removes the current player from the pool of players for the community games | User |
-| participants | Shows a list of all registered users for the community games | User |
-| register [ingameName] | Register player to list | User |
-| registerUser [mentionUser] [ingameName] | Register another user to the playerlist | Admin |
-| addUser [mentionUser] | Add the mentioned user to the playerpool | Admin |
-| removeUser [mentionUser] | Removes the mentioned user from the playerpool | Admin |
-| deleteUser [mentionUser] | Deletes a player from the playerlist textfile | Admin |
+| addToBench @[playerName] | Adds a player to the bench | Admin | 
+| removeFromBench @[playerName] | Remove a player from the bench | Admin |
+| showBench | Displays the list of players currently in bench | User |
 
 ## Team Generator
 | Command | Description | Permissions |
 |--|--|--|
-| generateTeams | Generates 2 random teams of 6 players each | User |
+| generateTeams | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation | Admin |
 
 ## Map Generator
 | Command | Description | Permissions |
