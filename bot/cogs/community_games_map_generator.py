@@ -14,7 +14,7 @@ class CommunityGamesMapGenerator(commands.Cog):
     async def on_ready(self):
         self.client.file_repository.create_map_file_if_doesnt_exist()
 
-    @commands.command(name="addMap")
+    @commands.command(name="addMap", description='1')
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def add_map_command(self, ctx, map_name):
@@ -23,7 +23,7 @@ class CommunityGamesMapGenerator(commands.Cog):
             ctx.author.mention + " " + map_name + " was registered to the pool."
         )
 
-    @commands.command(name="getMaps")
+    @commands.command(name="getMaps", description='2')
     @decorators.only_allowed_channels
     async def get_maps_command(self, ctx):
         maps = self.client.file_repository.get_maps_from_file()
@@ -37,7 +37,7 @@ class CommunityGamesMapGenerator(commands.Cog):
             embed.add_field(name="Map " + str(x + 1) + ":", value=maps[x])
         await ctx.send(embed=embed)
 
-    @commands.command(name="getRandomMap")
+    @commands.command(name="getRandomMap", description='3')
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def get_random_map_command(self, ctx):
@@ -53,19 +53,19 @@ class CommunityGamesMapGenerator(commands.Cog):
         self.client.global_variables.used_maps.append(random_map)
         await ctx.send(random_map)
 
-    @commands.command(name="resetMaps")
+    @commands.command(name="resetMaps", description='4')
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def reset_maps_command(self, ctx):
         del self.client.global_variables.used_maps[:]
 
-    @commands.command(name="getUsedMaps")
+    @commands.command(name="getUsedMaps", description='5')
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def get_used_maps_command(self, ctx):
         await ctx.send(self.client.global_variables.used_maps)
 
-    @commands.command(name="removeMap")
+    @commands.command(name="removeMap", description='6')
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def remove_map_command(self, ctx, map_name):

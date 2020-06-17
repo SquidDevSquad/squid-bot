@@ -29,7 +29,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
         voice_channel = await self.find_community_games_voice_channel(ctx)
         members = voice_channel.members
         num_of_players = len(members)
-        embed = await self.generate_members_in_channel_msg(members, num_of_players, voice_channel.name)
+        embed = UserUtils.generate_player_list_embed(members, voice_channel.name)
         await ctx.send(embed=embed)
 
         log.info("Current number of players: " + str(num_of_players))
@@ -63,17 +63,11 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
         await ctx.send(embed=self.generate_team_embed_message(1, team0))
         await ctx.send(embed=self.generate_team_embed_message(2, team1))
+        await ctx.send(embed=UserUtils.generate_player_list_embed(bench, "Bench"))
 
     @staticmethod
     async def find_community_games_voice_channel(ctx):
         return filter(is_community_games_channel, ctx.guild.voice_channels).__next__()
-
-    @staticmethod
-    async def generate_members_in_channel_msg(members, num_of_players, voice_channel_name):
-        member_names = '\n'.join([UserUtils.get_nick_or_name(m) for m in members])
-        return discord.Embed(title="{} member(s) in {}".format(num_of_players, voice_channel_name),
-                             description=member_names,
-                             color=discord.Color.blue())
 
     @staticmethod
     def generate_team(members, team):
@@ -100,9 +94,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
     def get_not_enough_players_msg(current_number_of_players):
         return (
             " Not enough players for 2 teams. Currently have: {currentNumberOfPlayers}. "
-            "At least 12 players needed.".format(
-                currentNumberOfPlayers=current_number_of_players
-            )
+            "At least 12 players needed.".format(currentNumberOfPlayers=current_number_of_players)
         )
 
     def add_remaining_players_to_bench(self, members):

@@ -17,7 +17,7 @@ class CommunityGames(commands.Cog):
         self.client.file_repository.create_player_file_if_doesnt_exist()
 
     # TODO Mor: Add tests
-    @commands.command(help="Reset all and open team registration", name="open")
+    @commands.command(help="Reset all and open team registration", name="open", description='1')
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def open_registration_command(self, ctx):
@@ -32,7 +32,7 @@ class CommunityGames(commands.Cog):
         log.info("Activated registration for community games")
         await ctx.send(ctx.author.mention + " Registrations are open")
 
-    @commands.command(help="Close team registration", name="close")
+    @commands.command(help="Close team registration", name="close", description='2')
     @decorators.is_admin
     @decorators.only_allowed_channels
     @decorators.is_registration_open
@@ -42,7 +42,7 @@ class CommunityGames(commands.Cog):
         await ctx.send(ctx.author.mention + " Registrations are closed")
 
     # TODO Mor: Add tests
-    @commands.command(help="Add a player to the bench", name="addToBench")
+    @commands.command(help="Add a player to the bench", name="addToBench", description='3')
     @decorators.is_admin
     @decorators.only_allowed_channels
     @decorators.is_registration_open
@@ -52,7 +52,7 @@ class CommunityGames(commands.Cog):
         user_name = UserUtils.get_nick_or_name(user)
         await ctx.send(ctx.author.mention + " User `" + user_name + "` has been added to the bench")
 
-    @commands.command(help="Remove a player from the bench", name="removeFromBench")
+    @commands.command(help="Remove a player from the bench", name="removeFromBench", description='4')
     @decorators.is_admin
     @decorators.only_allowed_channels
     @decorators.is_registration_open
@@ -64,7 +64,7 @@ class CommunityGames(commands.Cog):
         else:
             await ctx.send(ctx.author.mention + " User `" + user.name + "` is not in the bench")
 
-    @commands.command(help="Show a list of players in bench", name="showBench")
+    @commands.command(help="Show a list of players in bench", name="showBench", description='5')
     @decorators.only_allowed_channels
     async def show_bench_command(self, ctx):
         embed = await self.generate_members_in_bench_msg(self.client.global_variables.bench)
