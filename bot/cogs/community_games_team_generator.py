@@ -11,11 +11,6 @@ from log import LoggerFactory
 log = LoggerFactory.get_logger(__name__)
 
 
-def print_players(players):
-    if len(players) > 0:
-        return ",".join([x.name for x in players])
-
-
 class CommunityGamesTeamGenerator(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -47,12 +42,12 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
         bench = self.client.global_variables.bench
         self.remove_benched_players_from_general_list(bench, members)
-        log.info("Adding previously benched players to teams:%s", print_players(bench))
+        log.info("Adding previously benched players to teams:%s", UserUtils.print_players(bench))
         self.generate_teams(bench)
-        log.info("Adding players from players pool to teams:%s", print_players(members))
+        log.info("Adding players from players pool to teams:%s", UserUtils.print_players(members))
         self.generate_teams(members)
 
-        log.info("Adding unselected players to bench:%s", print_players(members))
+        log.info("Adding unselected players to bench:%s", UserUtils.print_players(members))
         self.add_remaining_players_to_bench(members)
         members.clear()
 
@@ -62,8 +57,8 @@ class CommunityGamesTeamGenerator(commands.Cog):
         log.info("Teams generated are: "
                  "\n Team 1: %s "
                  "\n Team 2: %s",
-                 print_players(team0),
-                 print_players(team1)
+                 UserUtils.print_players(team0),
+                 UserUtils.print_players(team1)
                  )
 
         await ctx.send(embed=self.generate_team_embed_message(1, team0))

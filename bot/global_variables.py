@@ -7,4 +7,3 @@ class GlobalVariables:
         self.used_maps = list()
         self.registration_opened = False
         self.user_for_giveaway = list()
-        self.test = ''
