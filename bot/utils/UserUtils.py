@@ -32,4 +32,4 @@ def generate_player_list_embed(players, list_name):
 
 
 def filter_spectators(players):
-    return [p for p in players if p.status is not ONLINE]
+    return [p for p in players if p.status.value is not ONLINE]

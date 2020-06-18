@@ -21,7 +21,7 @@ def generate_players_list(length, status=UserUtils.ONLINE):
         player.nick = None
         player.id = str(i) + status
         player.name = "player" + str(i)
-        player.status = status
+        player.status.value = status
         players.append(player)
     return players
 

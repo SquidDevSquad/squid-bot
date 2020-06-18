@@ -33,8 +33,6 @@ class CommunityGamesTeamGenerator(commands.Cog):
         voice_channel = ListUtils.find_by_id(Config.COMMUNITY_GAMES_VOICE_CHANNEL, ctx.guild.voice_channels)
         members = voice_channel.members
 
-        # members = TestUtils.dup_members(members, 15)
-
         self.client.global_variables.spectators = UserUtils.filter_spectators(members)
         spectators = self.client.global_variables.spectators
         log.info("Spectator players:%s", UserUtils.print_players(spectators))
@@ -51,8 +49,8 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
         num_of_players = len(members)
 
-        embed = UserUtils.generate_player_list_embed(members, voice_channel.name)
-        await ctx.send(embed=embed)
+        await ctx.send(embed=(UserUtils.generate_player_list_embed(members, voice_channel.name)))
+        await ctx.send(embed=UserUtils.generate_player_list_embed(spectators, "Spectators"))
 
         log.info("Current number of players: " + str(num_of_players))
 
@@ -86,7 +84,6 @@ class CommunityGamesTeamGenerator(commands.Cog):
         await ctx.send(embed=self.generate_team_embed_message(1, team0))
         await ctx.send(embed=self.generate_team_embed_message(2, team1))
         await ctx.send(embed=UserUtils.generate_player_list_embed(bench, "Bench"))
-        await ctx.send(embed=UserUtils.generate_player_list_embed(bench, "Spectators"))
 
     @staticmethod
     def generate_team(members, team):
