@@ -14,14 +14,14 @@ async def async_magic():
 MagicMock.__await__ = lambda x: async_magic().__await__()
 
 
-def generate_players_list(length):
+def generate_players_list(length, status=UserUtils.ONLINE):
     players = list()
     for i in range(length):
         player = MagicMock()
         player.nick = None
-        player.id = i
+        player.id = str(i) + status
         player.name = "player" + str(i)
-        player.status = UserUtils.ONLINE
+        player.status = status
         players.append(player)
     return players
 
@@ -45,7 +45,6 @@ def verify_bench_does_not_contain_players(bench, team0, team1):
 ctx_mock = MagicMock()
 
 
-# TODO Mor: Add tests for spectators filtering
 class TestCommunityGamesTeamGenerator(TestCase):
 
     def setUp(self) -> None:
@@ -153,6 +152,43 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertEqual(6, len(team1))
         self.assertEqual(10, len(bench))
         self.assertTrue(verify_benched_players_play(benched_players, team0, team1))
+        self.assertTrue(verify_bench_does_not_contain_players(bench, team0, team1))
+        self.assertFalse(ListUtils.contains_duplicates(team0))
+        self.assertFalse(ListUtils.contains_duplicates(team1))
+        self.assertFalse(ListUtils.contains_duplicates(bench))
+        self.assertEqual(0, len(voice_channel_mock.members))
+
+    def test_generate_teams_with_spectators(self):
+        Config.ALLOWED_CHANNEL = ["Community Games"]
+
+        voice_channel_mock = MagicMock()
+        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
+        online_players = generate_players_list(15)
+        idle_players = generate_players_list(10, UserUtils.IDLE)
+        all_players = list()
+        all_players.extend(online_players)
+        all_players.extend(idle_players)
+        voice_channel_mock.members = all_players
+
+        ctx_mock.message.channel.id = "Community Games"
+        ctx_mock.author.mention = "@Kane"
+        ctx_mock.guild.voice_channels = [voice_channel_mock]
+
+        client_mock = MagicMock()
+        client_mock.global_variables.bench = list()
+
+        comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(comm_games_team_generator.generate_teams_command(comm_games_team_generator, ctx_mock))
+        team0 = client_mock.global_variables.teams[0]
+        team1 = client_mock.global_variables.teams[1]
+
+        bench = client_mock.global_variables.bench
+        spectators = client_mock.global_variables.spectators
+        self.assertEqual(6, len(team0))
+        self.assertEqual(6, len(team1))
+        self.assertEqual(3, len(bench))
+        self.assertEqual(10, len(spectators))
         self.assertTrue(verify_bench_does_not_contain_players(bench, team0, team1))
         self.assertFalse(ListUtils.contains_duplicates(team0))
         self.assertFalse(ListUtils.contains_duplicates(team1))

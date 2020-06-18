@@ -1,6 +1,7 @@
 import discord
 
 ONLINE = "online"
+IDLE = "idle"
 
 
 def get_nick_or_name(player):
