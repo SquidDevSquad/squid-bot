@@ -50,7 +50,8 @@ class CommunityGamesTeamGenerator(commands.Cog):
         num_of_players = len(members)
 
         await ctx.send(embed=(UserUtils.generate_player_list_embed(members, voice_channel.name)))
-        await ctx.send(embed=UserUtils.generate_player_list_embed(spectators, "Spectators"))
+        if spectators:
+            await ctx.send(embed=UserUtils.generate_player_list_embed(spectators, "Spectators"))
 
         log.info("Current number of players: " + str(num_of_players))
 
