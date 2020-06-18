@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 
-import UserUtils
 import decorators
 from log import LoggerFactory
+from utils import UserUtils
 
 log = LoggerFactory.get_logger(__name__)
 

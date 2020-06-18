@@ -3,8 +3,8 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 
 import Config as Config
-import UserUtils
 from cogs import community_games_team_generator
+from utils import ListUtils, UserUtils
 
 
 async def async_magic():
@@ -21,21 +21,15 @@ def generate_players_list(length):
         player.nick = None
         player.id = i
         player.name = "player" + str(i)
+        player.status = UserUtils.ONLINE
         players.append(player)
     return players
-
-
-def contains_duplicates(lst):
-    if len(lst) == len(set(lst)):
-        return False
-    else:
-        return True
 
 
 def verify_benched_players_play(benched_players, team0, team1):
     for benched_player in benched_players:
         player_id = benched_player.id
-        if not UserUtils.find(player_id, team0) and not UserUtils.find(player_id, team1):
+        if not ListUtils.find_by_id(player_id, team0) and not ListUtils.find_by_id(player_id, team1):
             return False
     return True
 
@@ -43,7 +37,7 @@ def verify_benched_players_play(benched_players, team0, team1):
 def verify_bench_does_not_contain_players(bench, team0, team1):
     for benched_player in bench:
         player_id = benched_player.id
-        if UserUtils.find(player_id, team0) or UserUtils.find(player_id, team1):
+        if ListUtils.find_by_id(player_id, team0) or ListUtils.find_by_id(player_id, team1):
             return False
     return True
 
@@ -51,6 +45,7 @@ def verify_bench_does_not_contain_players(bench, team0, team1):
 ctx_mock = MagicMock()
 
 
+# TODO Mor: Add tests for spectators filtering
 class TestCommunityGamesTeamGenerator(TestCase):
 
     def setUp(self) -> None:
@@ -97,9 +92,6 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
-        client_mock.global_variables.teams = list()
-        client_mock.global_variables.teams.append(list())
-        client_mock.global_variables.teams.append(list())
         client_mock.global_variables.bench = list()
 
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
@@ -107,8 +99,8 @@ class TestCommunityGamesTeamGenerator(TestCase):
         loop.run_until_complete(comm_games_team_generator.generate_teams_command(comm_games_team_generator, ctx_mock))
         self.assertEqual(6, len(client_mock.global_variables.teams[0]))
         self.assertEqual(6, len(client_mock.global_variables.teams[1]))
-        self.assertFalse(contains_duplicates(client_mock.global_variables.teams[0]))
-        self.assertFalse(contains_duplicates(client_mock.global_variables.teams[1]))
+        self.assertFalse(ListUtils.contains_duplicates(client_mock.global_variables.teams[0]))
+        self.assertFalse(ListUtils.contains_duplicates(client_mock.global_variables.teams[1]))
         self.assertEqual(0, len(voice_channel_mock.members))
 
     def test_generate_teams_more_than_12_players(self):
@@ -123,9 +115,6 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
-        client_mock.global_variables.teams = list()
-        client_mock.global_variables.teams.append(list())
-        client_mock.global_variables.teams.append(list())
         client_mock.global_variables.bench = list()
 
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
@@ -134,9 +123,9 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertEqual(6, len(client_mock.global_variables.teams[0]))
         self.assertEqual(6, len(client_mock.global_variables.teams[1]))
         self.assertEqual(10, len(client_mock.global_variables.bench))
-        self.assertFalse(contains_duplicates(client_mock.global_variables.teams[0]))
-        self.assertFalse(contains_duplicates(client_mock.global_variables.teams[1]))
-        self.assertFalse(contains_duplicates(client_mock.global_variables.bench))
+        self.assertFalse(ListUtils.contains_duplicates(client_mock.global_variables.teams[0]))
+        self.assertFalse(ListUtils.contains_duplicates(client_mock.global_variables.teams[1]))
+        self.assertFalse(ListUtils.contains_duplicates(client_mock.global_variables.bench))
         self.assertEqual(0, len(voice_channel_mock.members))
 
     def test_generate_teams_from_bench(self):
@@ -151,9 +140,6 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
-        client_mock.global_variables.teams = list()
-        client_mock.global_variables.teams.append(list())
-        client_mock.global_variables.teams.append(list())
         benched_players = generate_players_list(5)
         client_mock.global_variables.bench = benched_players.copy()
 
@@ -168,7 +154,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertEqual(10, len(bench))
         self.assertTrue(verify_benched_players_play(benched_players, team0, team1))
         self.assertTrue(verify_bench_does_not_contain_players(bench, team0, team1))
-        self.assertFalse(contains_duplicates(team0))
-        self.assertFalse(contains_duplicates(team1))
-        self.assertFalse(contains_duplicates(bench))
+        self.assertFalse(ListUtils.contains_duplicates(team0))
+        self.assertFalse(ListUtils.contains_duplicates(team1))
+        self.assertFalse(ListUtils.contains_duplicates(bench))
         self.assertEqual(0, len(voice_channel_mock.members))
