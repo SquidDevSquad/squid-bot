@@ -6,7 +6,7 @@ from discord.ext import commands
 import Config
 import decorators
 from log import LoggerFactory
-from utils import ListUtils
+from utils import ListUtils, TeamUtils
 from utils import UserUtils
 
 log = LoggerFactory.get_logger(__name__)
@@ -105,7 +105,9 @@ class CommunityGamesTeamGenerator(commands.Cog):
 
     @staticmethod
     def generate_team_embed_message(number_of_team, team):
-        embed = discord.Embed(title="Team " + str(number_of_team), color=0x00FF00)
+        embed = discord.Embed(
+            title="Team " + str(number_of_team) + " (" + str(TeamUtils.get_team_avg_sr(team)) + " SR)",
+            color=0x00FF00)
         for x in range(0, len(team)):
             player = team[x]
             embed.add_field(name="Player " + str(x + 1) + ":", value=UserUtils.get_nick_or_name(player), inline=True)

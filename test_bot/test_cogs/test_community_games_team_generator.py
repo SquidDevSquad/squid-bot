@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 
 import Config as Config
 from cogs import community_games_team_generator
-from utils import ListUtils, UserUtils
+from utils import ListUtils, UserUtils, TestUtils
 
 
 async def async_magic():
@@ -12,18 +12,6 @@ async def async_magic():
 
 
 MagicMock.__await__ = lambda x: async_magic().__await__()
-
-
-def generate_players_list(length, status=UserUtils.ONLINE):
-    players = list()
-    for i in range(length):
-        player = MagicMock()
-        player.nick = None
-        player.id = str(i) + status
-        player.name = "player" + str(i)
-        player.status.value = status
-        players.append(player)
-    return players
 
 
 def verify_benched_players_play(benched_players, team0, team1):
@@ -65,7 +53,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
 
         voice_channel_mock = MagicMock()
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
-        voice_channel_mock.members = generate_players_list(11)
+        voice_channel_mock.members = TestUtils.generate_mock_players_list(11)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
@@ -84,7 +72,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
 
         voice_channel_mock = MagicMock()
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
-        voice_channel_mock.members = generate_players_list(12)
+        voice_channel_mock.members = TestUtils.generate_mock_players_list(12)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
@@ -107,7 +95,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
 
         voice_channel_mock = MagicMock()
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
-        voice_channel_mock.members = generate_players_list(22)
+        voice_channel_mock.members = TestUtils.generate_mock_players_list(22)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
@@ -132,14 +120,14 @@ class TestCommunityGamesTeamGenerator(TestCase):
 
         voice_channel_mock = MagicMock()
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
-        voice_channel_mock.members = generate_players_list(22)
+        voice_channel_mock.members = TestUtils.generate_mock_players_list(22)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
         ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
-        benched_players = generate_players_list(5)
+        benched_players = TestUtils.generate_mock_players_list(5)
         client_mock.global_variables.bench = benched_players.copy()
 
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
@@ -163,8 +151,8 @@ class TestCommunityGamesTeamGenerator(TestCase):
 
         voice_channel_mock = MagicMock()
         voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
-        online_players = generate_players_list(15)
-        idle_players = generate_players_list(10, UserUtils.IDLE)
+        online_players = TestUtils.generate_mock_players_list(15)
+        idle_players = TestUtils.generate_mock_players_list(10, UserUtils.IDLE)
         all_players = list()
         all_players.extend(online_players)
         all_players.extend(idle_players)

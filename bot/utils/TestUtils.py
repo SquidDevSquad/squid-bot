@@ -1,4 +1,5 @@
 from random import randrange
+from unittest.mock import MagicMock
 
 from utils import UserUtils
 
@@ -40,5 +41,18 @@ def generate_players_list(length, status=UserUtils.ONLINE):
     players = list()
     for i in range(length):
         player = TestPlayer(str(i) + "_" + status, status, "playerName" + str(i) + "_" + status)
+        players.append(player)
+    return players
+
+
+def generate_mock_players_list(length, status=UserUtils.ONLINE):
+    players = list()
+    for i in range(length):
+        player = MagicMock()
+        player.nick = None
+        player.id = str(i) + status
+        player.name = "player" + str(i)
+        player.status.value = status
+        player.roles = [PlayerRole()]
         players.append(player)
     return players
