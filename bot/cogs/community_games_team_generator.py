@@ -33,6 +33,10 @@ class CommunityGamesTeamGenerator(commands.Cog):
         voice_channel = ListUtils.find_by_id(Config.COMMUNITY_GAMES_VOICE_CHANNEL, ctx.guild.voice_channels)
         members = voice_channel.members
 
+        # members = TestUtils.generate_players_list(14)
+        # spectators = TestUtils.generate_players_list(3, UserUtils.IDLE)
+        # members.extend(spectators)
+
         self.client.global_variables.spectators = UserUtils.filter_spectators(members)
         spectators = self.client.global_variables.spectators
         log.info("Spectator players:%s", UserUtils.print_players(spectators))

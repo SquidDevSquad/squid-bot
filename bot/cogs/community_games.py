@@ -47,22 +47,27 @@ class CommunityGames(commands.Cog):
     @decorators.only_allowed_channels
     @decorators.is_registration_open
     async def add_to_bench_command(self, ctx, user: discord.Member):
-        log.info("Adding %s to bench...", UserUtils.get_nick_or_name(user))
-        self.client.global_variables.bench.append(user)
-        user_name = UserUtils.get_nick_or_name(user)
+        user_name = UserUtils.get_nick_or_name_emojiless(user)
+        log.info("Adding %s to bench...", user_name)
+        bench = self.client.global_variables.bench
+        bench.append(user)
         await ctx.send(ctx.author.mention + " User `" + user_name + "` has been added to the bench")
+        await ctx.send(embed=UserUtils.generate_player_list_embed(bench, "Bench"))
 
     @commands.command(help="Remove a player from the bench", name="removeFromBench", description='4')
     @decorators.is_admin
     @decorators.only_allowed_channels
     @decorators.is_registration_open
     async def remove_from_bench_command(self, ctx, user: discord.Member):
+        user_name = UserUtils.get_nick_or_name_emojiless(user)
         log.info("Removing %s from bench...", user.name)
-        if user in self.client.global_variables.bench:
-            self.client.global_variables.bench.remove(user)
-            await ctx.send(ctx.author.mention + " User `" + user.name + "` has been removed from the bench")
+        bench = self.client.global_variables.bench
+        if user in bench:
+            bench.remove(user)
+            await ctx.send(ctx.author.mention + " User `" + user_name + "` has been removed from the bench")
         else:
-            await ctx.send(ctx.author.mention + " User `" + user.name + "` is not in the bench")
+            await ctx.send(ctx.author.mention + " User `" + user_name + "` is not in the bench")
+        await ctx.send(embed=UserUtils.generate_player_list_embed(bench, "Bench"))
 
     @commands.command(help="Show a list of players in bench", name="showBench", description='5')
     @decorators.only_allowed_channels

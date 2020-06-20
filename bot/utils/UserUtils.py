@@ -31,6 +31,13 @@ def get_nick_or_name(player):
         return player.name + " " + rank_emoji
 
 
+def get_nick_or_name_emojiless(player):
+    if player.nick is not None:
+        return player.nick
+    else:
+        return player.name
+
+
 def remove_players_from_list(list_to_remove, list_remove_from):
     for player_to_remove in list_to_remove:
         for player in list_remove_from:
