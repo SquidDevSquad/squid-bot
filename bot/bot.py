@@ -7,12 +7,11 @@ import Config
 import decorators
 import file_repository
 import global_variables
-from MyHelpCommand import MyHelpCommand
+from commands.MyHelpCommand import MyHelpCommand
 from log import LoggerFactory
 
 log = LoggerFactory.get_logger(__name__)
 
-# help_command = commands.DefaultHelpCommand(sort_commands=False)
 help_command = MyHelpCommand()
 client = commands.Bot(command_prefix=Config.COMMAND_PREFIX, help_command=help_command)
 
