@@ -24,7 +24,7 @@ class MyHelpCommand(DefaultHelpCommand):
 
         # Now we can add the commands to the page.
         for category, commands in to_iterate:
-            commands = sorted(commands, key=lambda c: c.name) if self.sort_commands else list(commands)
+            commands = sorted(commands, key=lambda c: c.description) if self.sort_commands else list(commands)
             self.add_indented_commands(commands, heading=category, max_size=max_size)
 
         note = self.get_ending_note()
