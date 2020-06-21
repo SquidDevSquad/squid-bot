@@ -24,7 +24,7 @@
 ## Team Generator
 | Command | Alias | Description | Permissions |
 |--|--|--|--|
-| generateTeams | gt | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation. Generation is made with player who have set **online** status on Discord. Players with other statuses are considered spectators | Admin |
+| generateTeams | gt | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation. Generation is made with players who have set **online** status on Discord. Players with other statuses are considered spectators | Admin |
 
 ## Map Generator
 | Command | Description | Permissions |
