@@ -1,8 +1,20 @@
 # Changelog
+## Version 1.4.0
+* Add spectator filtering by status
+* Add rank emojis to players in list (Based on Discord role)
+* Add average team SR calculation (Based on Discord role)
+
+Other changes:
+* Add `gt` alias for `generateTeams` command
+* Fix sorting of commands in `help` command embed
+* Add bench list printing after add/remove
+
+
 ## Version 1.3.0
 ## 2020-06-17
 **Major release**:
 * Refactor team generation to work with voice channel members without relying on files
+* Add auto-bench priority mechanism
 * Remove lots of unneeded code
 
 ## Version 1.2.0
