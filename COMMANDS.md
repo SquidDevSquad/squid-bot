@@ -22,9 +22,9 @@
 | showBench | Displays the list of players currently in bench | User |
 
 ## Team Generator
-| Command | Description | Permissions |
-|--|--|--|
-| generateTeams | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation | Admin |
+| Command | alias | Description | Permissions |
+|--|--|--|--|
+| generateTeams | gt | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation. Generation is made with player who have set **online** status on Discord. Players with other statuses are considered spectators | Admin |
 
 ## Map Generator
 | Command | Description | Permissions |
