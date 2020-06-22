@@ -11,6 +11,7 @@ class TestPlayer:
         self.name = player_name
         self.status = PlayerStatus(player_status)
         self.roles = [PlayerRole()]
+        self.mention = '@' + player_name
 
     def __key(self):
         return self.id

@@ -1,3 +1,6 @@
+from random import randint
+
+
 def remove_duplicates(lst):
     return list(dict.fromkeys(lst))
 
@@ -13,3 +16,7 @@ def find_by_id(id_val, lst):
 
 def contains_duplicates(lst):
     return not len(lst) == len(set(lst))
+
+
+def get_rand_index(lst):
+    return randint(0, len(lst) - 1)

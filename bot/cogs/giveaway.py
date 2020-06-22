@@ -1,5 +1,3 @@
-from random import randint
-
 import discord
 from discord.ext import commands
 
@@ -7,8 +5,24 @@ import Config
 import decorators
 from log import LoggerFactory
 from utils import ListUtils
+from utils import UserUtils
+
+# from utils import TestUtils
 
 log = LoggerFactory.get_logger(__name__)
+
+funny_declare_msgs = [
+    "This time it's for sure ... {} !",
+    "{} feels like it's your lucky day !",
+    "This game is already in your pocket {}",
+    "You got this {} ! gg ez",
+    "Aaaaaaand is it {} ??? is it ?",
+    "I can just feel it's gonna be {} !",
+    "Always lucky {}",
+    "Crossing my fingers for you {} !",
+    "I got a feeling the dice is on your side {} !",
+    "Lady luck has a thing for you {}"
+]
 
 
 # TODO Mor: Add tests
@@ -42,6 +56,11 @@ class Giveaway(commands.Cog):
         winners = self.client.global_variables.giveaway_winners
         channel = self.client.get_channel(Config.GIVEAWAY_VOICE_CHANNEL_ID)
         channel_members = channel.members
+
+        # channel_members = TestUtils.generate_players_list(14)
+        # spectators = TestUtils.generate_players_list(3, UserUtils.IDLE)
+        # channel_members.extend(spectators)
+
         contenders = ListUtils.remove_sub_list(channel_members, winners)
         if not contenders:
             await ctx.send(embed=discord.Embed(title="Squid Squad Community Games Giveaway",
@@ -49,13 +68,26 @@ class Giveaway(commands.Cog):
                                                color=discord.Color.blue()))
             return
 
-        random_index = randint(0, len(contenders) - 1)
+        player_lottery_msg = self.generate_players_lottery_msg(self, contenders)
 
+        random_index = ListUtils.get_rand_index(contenders)
         new_winner = contenders[random_index]
         winners.append(new_winner)
         await ctx.send(embed=discord.Embed(title="Squid Squad Community Games Giveaway",
-                                           description="And the winner is ... " + new_winner.mention + "!",
+                                           description=player_lottery_msg + "\n\n\nAnd the winner is ... "
+                                                       + new_winner.mention + "!",
                                            color=discord.Color.blue()))
+
+    @staticmethod
+    def generate_players_lottery_msg(self, players):
+        return '\n'.join(
+            [self.get_rand_declare_msg().format(UserUtils.get_nick_or_name(player)) for
+             player in players])
+
+    @staticmethod
+    def get_rand_declare_msg():
+        index = ListUtils.get_rand_index(funny_declare_msgs)
+        return funny_declare_msgs[index]
 
 
 def setup(client):
