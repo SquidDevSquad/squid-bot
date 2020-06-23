@@ -30,25 +30,6 @@ class Giveaway(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # TODO Mor: Remove this and docs
-    # @commands.command(name="getGiveawayUser")
-    # @decorators.is_admin
-    # @decorators.only_allowed_channels
-    # async def get_giveaway_user_command(self, ctx):
-    #
-    #     log.debug("Empty the list of participants")
-    #     del self.client.global_variables.user_for_giveaway[:]
-    #
-    #     log.debug("Add user to [user_for_giveaway]")
-    #     for member in channel_members:
-    #         self.client.global_variables.user_for_giveaway.append(member.id)
-    #
-    #     await ctx.send(
-    #         "Loaded "
-    #         + str(len(self.client.global_variables.user_for_giveaway))
-    #         + " users for the giveaway"
-    #     )
-
     @commands.command(name="getGiveawayWinner")
     @decorators.is_admin
     @decorators.only_allowed_channels
