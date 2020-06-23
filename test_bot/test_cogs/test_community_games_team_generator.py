@@ -1,7 +1,6 @@
 import asyncio
 from unittest import TestCase
 from unittest.mock import MagicMock
-from unittest.mock import Mock
 
 import Config as Config
 from cogs import community_games_team_generator
@@ -58,9 +57,8 @@ class TestCommunityGamesTeamGenerator(TestCase):
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
-        # ctx_mock.guild.voice_channels = [voice_channel_mock]
 
-        client_mock = Mock()
+        client_mock = MagicMock()
         client_mock.global_variables.bench = list()
         client_mock.get_channel.return_value = voice_channel_mock
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
@@ -80,7 +78,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
 
-        client_mock = Mock()
+        client_mock = MagicMock()
         client_mock.global_variables.bench = list()
         client_mock.get_channel.return_value = voice_channel_mock
 
@@ -103,7 +101,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
 
-        client_mock = Mock()
+        client_mock = MagicMock()
         client_mock.global_variables.bench = list()
         client_mock.get_channel.return_value = voice_channel_mock
 
@@ -128,7 +126,7 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
 
-        client_mock = Mock()
+        client_mock = MagicMock()
         client_mock.get_channel.return_value = voice_channel_mock
         benched_players = TestUtils.generate_mock_players_list(5)
         client_mock.global_variables.bench = benched_players.copy()
@@ -164,9 +162,13 @@ class TestCommunityGamesTeamGenerator(TestCase):
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
 
-        client_mock = Mock()
+        print(voice_channel_mock)
+
+        client_mock = MagicMock()
         client_mock.get_channel.return_value = voice_channel_mock
         client_mock.global_variables.bench = list()
+
+        print(client_mock.get_channel.return_value)
 
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
         loop = asyncio.get_event_loop()
