@@ -69,20 +69,32 @@ class Giveaway(commands.Cog):
             return
 
         player_lottery_msg = self.generate_players_lottery_msg(self, contenders)
+        prev_winners_msg = self.generate_prev_winners_msg(winners)
 
         random_index = ListUtils.get_rand_index(contenders)
         new_winner = contenders[random_index]
         winners.append(new_winner)
-        await ctx.send(embed=discord.Embed(title="Squid Squad Community Games Giveaway",
-                                           description=player_lottery_msg + "\n\n\nAnd the winner is ... "
-                                                       + new_winner.mention + "!",
+        await ctx.send(embed=discord.Embed(title="<:happysquid:589960594510184496> Squid Squad Community Games "
+                                                 "Giveaway <:happysquid:589960594510184496>",
+                                           description=prev_winners_msg + '\n' +
+                                                       player_lottery_msg + "\n\n\nAnd the winner is ... " +
+                                                       new_winner.mention + "!" + "\n Congratulations !!! 🥳 🥳 🥳",
                                            color=discord.Color.blue()))
 
     @staticmethod
     def generate_players_lottery_msg(self, players):
-        return '\n'.join(
+        return 'Contenders:\n' + '\n'.join(
             [self.get_rand_declare_msg().format(UserUtils.get_nick_or_name(player)) for
              player in players])
+
+    @staticmethod
+    def generate_prev_winners_msg(winners):
+        if not winners:
+            return ''
+
+        return 'Previous giveaway winners:\n' + '\n'.join(
+            [UserUtils.get_nick_or_name(winner) for
+             winner in winners]) + '\n'
 
     @staticmethod
     def get_rand_declare_msg():
