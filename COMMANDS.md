@@ -39,4 +39,4 @@
 ## Giveaway
 | Command | Description | Permissions |
 |--|--|--|
-| getGiveawayWinner | Draws a random user from the giveaway list | Admin |
+| giveaway | Draws a random user from the giveaway list | Admin |

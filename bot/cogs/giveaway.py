@@ -30,7 +30,7 @@ class Giveaway(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(name="getGiveawayWinner")
+    @commands.command(name="giveaway")
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def get_giveaway_winner_command(self, ctx):
