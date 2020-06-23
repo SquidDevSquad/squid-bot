@@ -24,6 +24,11 @@ funny_declare_msgs = [
     "Lady luck has a thing for you {}"
 ]
 
+giveaway_title = "<:happysquid:589960594510184496> Squid Squad Community Games Giveaway " \
+                 "<:happysquid:589960594510184496> "
+
+giveaway_desc = "{} \n {} \n\n\nAnd the winner is ... {} ! \n Congratulations !!! 🥳 🥳 🥳"
+
 
 # TODO Mor: Add tests
 class Giveaway(commands.Cog):
@@ -42,24 +47,25 @@ class Giveaway(commands.Cog):
         # spectators = TestUtils.generate_players_list(3, UserUtils.IDLE)
         # channel_members.extend(spectators)
 
+        prev_winners_msg = self.generate_prev_winners_msg(winners)
         contenders = ListUtils.remove_sub_list(channel_members, winners)
         if not contenders:
-            await ctx.send(embed=discord.Embed(title="Squid Squad Community Games Giveaway",
-                                               description="No contenders!",
+            await ctx.send(embed=discord.Embed(title=giveaway_title,
+                                               description=prev_winners_msg + '\n' + "No contenders!",
                                                color=discord.Color.blue()))
             return
 
         player_lottery_msg = self.generate_players_lottery_msg(self, contenders)
-        prev_winners_msg = self.generate_prev_winners_msg(winners)
 
         random_index = ListUtils.get_rand_index(contenders)
         new_winner = contenders[random_index]
         winners.append(new_winner)
-        await ctx.send(embed=discord.Embed(title="<:happysquid:589960594510184496> Squid Squad Community Games "
-                                                 "Giveaway <:happysquid:589960594510184496>",
-                                           description=prev_winners_msg + '\n' +
-                                                       player_lottery_msg + "\n\n\nAnd the winner is ... " +
-                                                       new_winner.mention + "!" + "\n Congratulations !!! 🥳 🥳 🥳",
+        await ctx.send(embed=discord.Embed(title=giveaway_title,
+                                           description=giveaway_desc.format(prev_winners_msg, player_lottery_msg,
+                                                                            new_winner.mention),
+                                           # description=prev_winners_msg + '\n' +
+                                           #             player_lottery_msg + "\n\n\nAnd the winner is ... " +
+                                           #             new_winner.mention + "!" + "\n Congratulations !!! 🥳 🥳 🥳",
                                            color=discord.Color.blue()))
 
     @staticmethod
