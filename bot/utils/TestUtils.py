@@ -55,5 +55,10 @@ def generate_mock_players_list(length, status=UserUtils.ONLINE):
         player.name = "player" + str(i)
         player.status.value = status
         player.roles = [PlayerRole()]
+        player.__str__ = to_str
         players.append(player)
     return players
+
+
+def to_str(self):
+    return self.name
