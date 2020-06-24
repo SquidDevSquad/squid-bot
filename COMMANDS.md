@@ -39,5 +39,4 @@
 ## Giveaway
 | Command | Description | Permissions |
 |--|--|--|
-| getGiveawayUser | Saves all user who are in the configured voice channel | Admin |
-| getGiveawayWinner | Draws a random user from the giveaway list | Admin |
+| giveaway | Draws a random user from the giveaway list | Admin |

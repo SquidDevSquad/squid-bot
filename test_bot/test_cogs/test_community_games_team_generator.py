@@ -36,12 +36,12 @@ ctx_mock = MagicMock()
 class TestCommunityGamesTeamGenerator(TestCase):
 
     def setUp(self) -> None:
-        ctx_mock.author.id = Config.ALLOWED_USER_TO_ADMIN_COMMANDS[0]
+        ctx_mock.author.id = Config.ADMIN_IDS[0]
         super().setUp()
 
     def test_generate_teams_command_no_allowed_channels(self):
         ctx_mock.message.channel.id = "Some channel"
-        Config.ALLOWED_CHANNEL = []
+        Config.ALLOWED_TEXT_CHANNEL_IDS = []
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(None)
         loop = asyncio.get_event_loop()
         loop.run_until_complete(comm_games_team_generator.generate_teams_command(comm_games_team_generator, ctx_mock))
@@ -49,17 +49,18 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertEqual('Not allowed to operate on this channel', ctx_mock.send.call_args[0][0])
 
     def test_generate_team_less_than_12_players(self):
-        Config.ALLOWED_CHANNEL = ["Community Games"]
+        Config.ALLOWED_TEXT_CHANNEL_IDS = ["Community Games"]
 
         voice_channel_mock = MagicMock()
-        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
+        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL_ID
         voice_channel_mock.members = TestUtils.generate_mock_players_list(11)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
-        ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
+        client_mock.global_variables.bench = list()
+        client_mock.get_channel.return_value = voice_channel_mock
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
         loop = asyncio.get_event_loop()
         loop.run_until_complete(comm_games_team_generator.generate_teams_command(comm_games_team_generator, ctx_mock))
@@ -68,18 +69,18 @@ class TestCommunityGamesTeamGenerator(TestCase):
                          ctx_mock.send.call_args[0][0])
 
     def test_generate_teams_exactly_12_players(self):
-        Config.ALLOWED_CHANNEL = ["Community Games"]
+        Config.ALLOWED_TEXT_CHANNEL_IDS = ["Community Games"]
 
         voice_channel_mock = MagicMock()
-        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
+        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL_ID
         voice_channel_mock.members = TestUtils.generate_mock_players_list(12)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
-        ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
         client_mock.global_variables.bench = list()
+        client_mock.get_channel.return_value = voice_channel_mock
 
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
         loop = asyncio.get_event_loop()
@@ -91,18 +92,18 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertEqual(0, len(voice_channel_mock.members))
 
     def test_generate_teams_more_than_12_players(self):
-        Config.ALLOWED_CHANNEL = ["Community Games"]
+        Config.ALLOWED_TEXT_CHANNEL_IDS = ["Community Games"]
 
         voice_channel_mock = MagicMock()
-        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
+        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL_ID
         voice_channel_mock.members = TestUtils.generate_mock_players_list(22)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
-        ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
         client_mock.global_variables.bench = list()
+        client_mock.get_channel.return_value = voice_channel_mock
 
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
         loop = asyncio.get_event_loop()
@@ -116,17 +117,17 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertEqual(0, len(voice_channel_mock.members))
 
     def test_generate_teams_from_bench(self):
-        Config.ALLOWED_CHANNEL = ["Community Games"]
+        Config.ALLOWED_TEXT_CHANNEL_IDS = ["Community Games"]
 
         voice_channel_mock = MagicMock()
-        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
+        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL_ID
         voice_channel_mock.members = TestUtils.generate_mock_players_list(22)
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
-        ctx_mock.guild.voice_channels = [voice_channel_mock]
 
         client_mock = MagicMock()
+        client_mock.get_channel.return_value = voice_channel_mock
         benched_players = TestUtils.generate_mock_players_list(5)
         client_mock.global_variables.bench = benched_players.copy()
 
@@ -147,10 +148,10 @@ class TestCommunityGamesTeamGenerator(TestCase):
         self.assertEqual(0, len(voice_channel_mock.members))
 
     def test_generate_teams_with_spectators(self):
-        Config.ALLOWED_CHANNEL = ["Community Games"]
+        Config.ALLOWED_TEXT_CHANNEL_IDS = ["Community Games"]
 
         voice_channel_mock = MagicMock()
-        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL
+        voice_channel_mock.id = Config.COMMUNITY_GAMES_VOICE_CHANNEL_ID
         online_players = TestUtils.generate_mock_players_list(15)
         idle_players = TestUtils.generate_mock_players_list(10, UserUtils.IDLE)
         all_players = list()
@@ -160,10 +161,14 @@ class TestCommunityGamesTeamGenerator(TestCase):
 
         ctx_mock.message.channel.id = "Community Games"
         ctx_mock.author.mention = "@Kane"
-        ctx_mock.guild.voice_channels = [voice_channel_mock]
+
+        print(voice_channel_mock)
 
         client_mock = MagicMock()
+        client_mock.get_channel.return_value = voice_channel_mock
         client_mock.global_variables.bench = list()
+
+        print(client_mock.get_channel.return_value)
 
         comm_games_team_generator = community_games_team_generator.CommunityGamesTeamGenerator(client_mock)
         loop = asyncio.get_event_loop()

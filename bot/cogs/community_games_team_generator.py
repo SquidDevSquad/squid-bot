@@ -9,6 +9,8 @@ from log import LoggerFactory
 from utils import ListUtils, TeamUtils
 from utils import UserUtils
 
+# from utils import TestUtils
+
 log = LoggerFactory.get_logger(__name__)
 
 
@@ -30,7 +32,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
         bench = self.client.global_variables.bench
 
         log.info("Generating teams...")
-        voice_channel = ListUtils.find_by_id(Config.COMMUNITY_GAMES_VOICE_CHANNEL, ctx.guild.voice_channels)
+        voice_channel = self.client.get_channel(Config.COMMUNITY_GAMES_VOICE_CHANNEL_ID)
         members = voice_channel.members
 
         # members = TestUtils.generate_players_list(14)
@@ -72,7 +74,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
         self.generate_teams(members)
 
         log.info("Adding unselected players to bench:%s", UserUtils.print_players(members))
-        ListUtils.add_to_list(bench, members)
+        bench.extend(members)
         bench = ListUtils.remove_duplicates(bench)
         members.clear()
 
