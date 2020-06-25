@@ -44,9 +44,9 @@ class Giveaway(commands.Cog):
         channel_members = channel.members
         log.info("Giveaway channel members are: " + UserUtils.print_names(channel_members))
 
-        channel_members = TestUtils.generate_players_list(14)
-        spectators = TestUtils.generate_players_list(3, UserUtils.IDLE)
-        channel_members.extend(spectators)
+        # channel_members = TestUtils.generate_players_list(14)
+        # spectators = TestUtils.generate_players_list(3, UserUtils.IDLE)
+        # channel_members.extend(spectators)
 
         prev_winners_msg = self.generate_prev_winners_msg(winners)
         contenders = ListUtils.remove_sub_list(channel_members, winners)
