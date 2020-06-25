@@ -31,32 +31,6 @@ class CommunityGamesMapGenerator(commands.Cog):
         self.client = client
         self.maps = from_json()
 
-    # @commands.Cog.listener()
-    # async def on_ready(self):
-    # TODO Mor: Remove this and docs
-    # @commands.command(name="addMap", description='1')
-    # @decorators.is_admin
-    # @decorators.only_allowed_channels
-    # async def add_map_command(self, ctx, map_name):
-    #     self.client.file_repository.add_map_to_file(map_name)
-    #     await ctx.send(
-    #         ctx.author.mention + " " + map_name + " was registered to the pool."
-    #     )
-    #
-    # @commands.command(name="getMaps", description='2')
-    # @decorators.only_allowed_channels
-    # async def get_maps_command(self, ctx):
-    #     maps = self.client.file_repository.get_maps_from_file()
-    #
-    #     if len(maps) == 0:
-    #         await ctx.send("No maps to show")
-    #         return
-    #
-    #     embed = discord.Embed(title="Maps", color=0x12FF32)
-    #     for x in range(0, len(maps)):
-    #         embed.add_field(name="Map " + str(x + 1) + ":", value=maps[x])
-    #     await ctx.send(embed=embed)
-
     # TODO Mor: Add tests
     @commands.command(name="getRandomMap", aliases=["grm"], description='1')
     @decorators.is_admin
