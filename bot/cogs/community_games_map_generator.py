@@ -32,7 +32,7 @@ class CommunityGamesMapGenerator(commands.Cog):
         self.maps = from_json()
 
     # TODO Mor: Add tests
-    @commands.command(name="getRandomMap", aliases=["grm"], description='1')
+    @commands.command(name="getRandomMap", aliases=["grm"], description='1', help='(alias: grm)')
     @decorators.is_admin
     @decorators.only_allowed_channels
     async def get_random_map_command(self, ctx):

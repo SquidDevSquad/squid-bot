@@ -18,7 +18,7 @@ class CommunityGamesTeamGenerator(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(name="generateTeams", aliases=["gt"])
+    @commands.command(name="generateTeams", aliases=["gt"], help='(alias: gt)')
     @decorators.is_admin
     @decorators.only_allowed_channels
     @decorators.is_registration_open
