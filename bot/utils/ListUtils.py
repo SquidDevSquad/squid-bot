@@ -7,7 +7,6 @@ def remove_duplicates(lst):
     return list(dict.fromkeys(lst))
 
 
-# TODO Mor: add tests
 def remove_sub_list(lst, sub_lst):
     return [elem for elem in lst if elem not in sub_lst]
 

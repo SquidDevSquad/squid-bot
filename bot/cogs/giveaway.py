@@ -30,7 +30,6 @@ giveaway_title = "<:happysquid:589960594510184496> Squid Squad Community Games G
 giveaway_desc = "{} \n {} \n\n\nAnd the winner is ... {} ! \n Congratulations !!! 🥳 🥳 🥳"
 
 
-# TODO Mor: Add tests
 class Giveaway(commands.Cog):
     def __init__(self, client):
         self.client = client

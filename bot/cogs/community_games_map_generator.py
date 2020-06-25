@@ -63,7 +63,6 @@ class CommunityGamesMapGenerator(commands.Cog):
     async def get_used_maps_command(self, ctx):
         await ctx.send(embed=ListUtils.get_embed(self.client.global_variables.used_maps, 'Used Maps'))
 
-    # TODO Mor: Update docs
     @commands.command(name="removeUsedMap", description='4')
     @decorators.is_admin
     @decorators.only_allowed_channels
