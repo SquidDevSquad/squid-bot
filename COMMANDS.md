@@ -27,14 +27,11 @@
 | generateTeams | gt | Generates 2 random teams of 6 players each, auto-adding to bench players who were not chosen. Players in bench have higher priority in next generation. Generation is made with players who have set **online** status on Discord. Players with other statuses are considered spectators | Admin |
 
 ## Map Generator
-| Command | Description | Permissions |
-|--|--|--|
-| addMap [mapName]| Adds a map to the map pool | Admin |
-| removeMap [mapName] | Removes a map from the pool | Admin |
-| getMaps | Displays all configured maps | User |
-| getRandomMap | Gets a random map | User |
-| getUsedMaps | Shows all maps which were already used | Admin |
-| resetMaps | Resets the used maps | Admin |
+| Command | Alias | Description | Permissions |
+|--|--|--|--|
+| getRandomMap | grm | Gets a random map | User |
+| getUsedMaps | - | Shows all maps which were already used | Admin |
+| resetUsedMaps | - | Resets the used maps | Admin |
 
 ## Giveaway
 | Command | Description | Permissions |
