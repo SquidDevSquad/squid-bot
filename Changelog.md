@@ -1,6 +1,7 @@
 # Changelog
 ## Version 1.5.0
-ZZ
+* Improve `Giveaway` feature
+* Improve `Map Generation` feature (works with Blizzard API + displays pictures)
 
 ## Version 1.4.0
 * Add spectator filtering by status
