@@ -7,4 +7,5 @@ class GlobalVariables:
         self.spectators = list()
         self.used_maps = list()
         self.registration_opened = False
-        self.user_for_giveaway = list()
+        self.giveaway_winners = list()
+        self.game_channel = None

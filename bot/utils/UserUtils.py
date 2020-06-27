@@ -47,8 +47,15 @@ def remove_players_from_list(list_to_remove, list_remove_from):
 
 
 def print_players(players):
-    if len(players) > 0:
-        return ",".join([get_nick_or_name(p) for p in players])
+    if not players:
+        return '[]'
+    return ",".join([get_nick_or_name(p) for p in players])
+
+
+def print_names(players):
+    if not players:
+        return '[]'
+    return ",".join([p.name for p in players])
 
 
 def generate_player_list_embed(players, list_name):

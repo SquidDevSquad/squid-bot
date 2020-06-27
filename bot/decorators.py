@@ -9,7 +9,7 @@ log = LoggerFactory.get_logger(__name__)
 def only_allowed_channels(f):
     @functools.wraps(f)
     async def wrapped(self, ctx, *args, **kwargs):
-        if ctx.message.channel.id not in Config.ALLOWED_CHANNEL:
+        if ctx.message.channel.id not in Config.ALLOWED_TEXT_CHANNEL_IDS:
             await ctx.send('Not allowed to operate on this channel')
             return
         else:
@@ -34,7 +34,7 @@ def is_registration_open(f):
 def is_admin(f):
     @functools.wraps(f)
     async def wrapped(self, ctx, *args, **kwargs):
-        if ctx.author.id not in Config.ALLOWED_USER_TO_ADMIN_COMMANDS:
+        if ctx.author.id not in Config.ADMIN_IDS:
             await ctx.send('You don\'t have the permissions to use this command')
             return
         else:
