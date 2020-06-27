@@ -62,7 +62,7 @@ class Giveaway(commands.Cog):
 
         random_index = ListUtils.get_rand_index(contenders)
         new_winner = contenders[random_index]
-        log.info("The new winner is: " + new_winner)
+        log.info("The new winner is: " + UserUtils.get_nick_or_name(new_winner))
         winners.append(new_winner)
         await ctx.send(embed=discord.Embed(title=giveaway_title,
                                            description=giveaway_desc.format(prev_winners_msg, player_lottery_msg,
