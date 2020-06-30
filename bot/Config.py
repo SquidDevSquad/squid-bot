@@ -1,5 +1,5 @@
 # The token needed to contact your bot
-DISCORD_TOKEN = 'NzA2MjI4NTc3MTc1MzM5MTgw.Xq3M0g.Yvq10c7H4m63k7bFV0t4Vt-af_Y'
+DISCORD_TOKEN = '''TnpBMk1qSTROVGMzTVRjMU16TTVNVGd3Llh2dXlCUS5uQi03b2M0bDExZEphVmVXX3RrdWFoS1Q2ekE='''
 
 # Needs to be at the beginning of every command
 COMMAND_PREFIX = '>'

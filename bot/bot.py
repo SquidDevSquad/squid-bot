@@ -1,3 +1,4 @@
+import base64
 import os
 from os.path import splitext
 
@@ -59,4 +60,5 @@ async def reload(ctx, extension):
     client.load_extension(f"cogs.{extension}")
 
 
-client.run(Config.DISCORD_TOKEN)
+token = base64.b64decode(Config.DISCORD_TOKEN)
+client.run(token.decode("utf-8"))
