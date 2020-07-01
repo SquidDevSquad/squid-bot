@@ -6,7 +6,6 @@ from discord.ext import commands
 
 import Config
 import decorators
-import file_repository
 import global_variables
 from commands.MyHelpCommand import MyHelpCommand
 from log import LoggerFactory
@@ -17,7 +16,6 @@ help_command = MyHelpCommand()
 client = commands.Bot(command_prefix=Config.COMMAND_PREFIX, help_command=help_command)
 
 client.global_variables = global_variables.GlobalVariables()
-client.file_repository = file_repository.FileRepository()
 
 for filename in os.listdir(os.getcwd() + "/bot/cogs"):
     file = splitext(filename)

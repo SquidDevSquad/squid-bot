@@ -14,7 +14,7 @@ class CommunityGames(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.client.file_repository.create_player_file_if_doesnt_exist()
+        log.debug("Community Games cog ready")
 
     # TODO Mor: Add tests
     @commands.command(help="Reset all and open team registration", name="open", description='1')
