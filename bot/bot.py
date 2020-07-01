@@ -26,7 +26,7 @@ for filename in os.listdir(os.getcwd() + "/bot/cogs"):
 
 @client.event
 async def on_ready():
-    log.info("Bot started")
+    log.info("Squid-Bot started :)")
 
 
 @client.event

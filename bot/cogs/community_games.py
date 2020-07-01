@@ -12,10 +12,6 @@ class CommunityGames(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        log.debug("Community Games cog ready")
-
     # TODO Mor: Add tests
     @commands.command(help="Reset all and open team registration", name="open", description='1')
     @decorators.is_admin
