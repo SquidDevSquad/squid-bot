@@ -19,15 +19,11 @@ client = commands.Bot(command_prefix=Config.COMMAND_PREFIX, help_command=help_co
 client.global_variables = global_variables.GlobalVariables()
 client.file_repository = file_repository.FileRepository()
 
-# for filename in os.listdir("./cogs"):
-#     file = splitext(filename)
-#     if file[1] == ".py":
-#         log.info("Load: " + file[0])
-#         client.load_extension(f"cogs.{file[0]}")
-
-for filename in os.listdir("."):
+for filename in os.listdir(os.getcwd() + "/cogs"):
     file = splitext(filename)
-    print(file)
+    if file[1] == ".py":
+        log.info("Load: " + file[0])
+        client.load_extension(f"cogs.{file[0]}")
 
 
 @client.event
