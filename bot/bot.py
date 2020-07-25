@@ -1,13 +1,11 @@
-import base64
 import os
 from os.path import splitext
-
-from discord.ext import commands
 
 import Config
 import decorators
 import global_variables
 from commands.MyHelpCommand import MyHelpCommand
+from discord.ext import commands
 from log import LoggerFactory
 
 log = LoggerFactory.get_logger(__name__)
@@ -58,5 +56,5 @@ async def reload(ctx, extension):
     client.load_extension(f"cogs.{extension}")
 
 
-token = base64.b64decode(Config.DISCORD_TOKEN)
-client.run(token.decode("utf-8"))
+token = os.environ['BOT_TOKEN']
+client.run(token)

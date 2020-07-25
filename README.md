@@ -8,17 +8,15 @@
 | ALLOWED_CHANNEL | IDs of the allowed channel |
 | ALLOWED_USER_TO_ADMIN_COMMANDS | IDs of the users who are allowed to use admin commands |
 
-## How to install
-
-* Create a copy of the `Config.py.template` file and rename it to `Config.py`. 
-* Open it and insert your Bot token to the `DISCORD_TOKEN` constant. 
-* Decide which prefix the commands should have and fill it in the `COMMAND_PREFIX` constant.
-
 ### Configure
 #### Admin permissions:
 In your `Config.py` insert the Discord IDs of wanted admin users to `ALLOWED_USER_TO_ADMIN_COMMANDS` list
 #### Permitted voice channels:
 In your `Config.py` insert the Discord IDs of wanted voice channels to `COMMUNITY_GAMES_VOICE_CHANNEL` and `GIVEAWAY_VOICE_CHANNEL` 
+
+### How To Run?
+
+In command line or your preferred IDE: `python bot/bot.py BOT_TOKEN=<your_bot_token>`
 
 ### Docker
 If you are using Docker to test or use the bot, you should first build the image with the following command:  
