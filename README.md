@@ -3,8 +3,8 @@ This Discord bot has the following features:
 #### Overwatch Team Generation
  Generates Overwatch 6v6 teams out of a selected Discord voice channel, taking into consideration the following:
  * Only users who are in status `online` on Discord are selected for team generation, others are considered spectators.
- * If there are more than 12 users in the voice channel, the remainder who are not selected are auto-benched. This means they are mandatory to be selected in the following generation (There are `add/removeFromBench` commands for adjustments)
- * Overwatch skill rating is displayed with appropriate emojis and the average team skill rating is calculated and presented after team generation (this relies on Discord roles)
+ * If there are more than 12 users in the voice channel, the remainder who are not selected are auto-benched. This means they are mandatory to be selected in the following generation (There are `add/removeFromBench` commands for adjustments).
+ * Overwatch skill rating is displayed with appropriate emojis and the average team skill rating is calculated and presented after team generation (this relies on Discord roles).
     
 #### Overwatch Map Generation
 
@@ -14,7 +14,7 @@ This Discord bot has the following features:
 #### Giveaway Lottery
 
 * Randomly selects a winner for a giveaway lottery out of a selected voice channel, displaying a designed message.
-* Marks the winner in order to void repeating the same winner ina single run (allows for repeated lotteries without restart)
+* Marks the winner in order to void repeating the same winner in a single run (allows for repeated lotteries without restart).
 
 ## Config.py Configuration
 | Config | Description |
