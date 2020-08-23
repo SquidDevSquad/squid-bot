@@ -3,7 +3,6 @@
 ## Configuration
 | Config | Description |
 |---|---|
-| DISCORD_TOKEN | The token needed to contact your bot |
 | COMMAND_PREFIX | Needs to be at the beginning of every command |
 | ALLOWED_CHANNEL | IDs of the allowed channel |
 | ALLOWED_USER_TO_ADMIN_COMMANDS | IDs of the users who are allowed to use admin commands |
