@@ -20,6 +20,7 @@
 | addToBench @[playerName] | Adds a player to the bench | Admin | 
 | removeFromBench @[playerName] | Remove a player from the bench | Admin |
 | showBench | Displays the list of players currently in bench | User |
+| clear | Clears all messages in current channel | Admin | 
 
 ## Team Generator
 | Command | Alias | Description | Permissions |

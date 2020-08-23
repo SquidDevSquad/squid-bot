@@ -1,3 +1,5 @@
+import asyncio
+
 import discord
 from discord.ext import commands
 
@@ -70,6 +72,15 @@ class CommunityGames(commands.Cog):
     async def show_bench_command(self, ctx):
         embed = await self.generate_members_in_bench_msg(self.client.global_variables.bench)
         await ctx.send(embed=embed)
+
+    @commands.command(help="Clears all messages in current channel", name="clear", description='6')
+    @decorators.is_admin
+    @decorators.only_allowed_channels
+    async def clear_command(self, channel: discord.TextChannel):
+        messages = await channel.history(limit=10).flatten()
+        for msg in messages:
+            await msg.delete(delay=1)
+            await asyncio.sleep(1)
 
     @staticmethod
     async def generate_members_in_bench_msg(bench):
