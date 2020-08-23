@@ -1,13 +1,11 @@
 import os
 from os.path import splitext
 
-from discord.ext import commands
-
 import Config
 import decorators
-import file_repository
 import global_variables
 from commands.MyHelpCommand import MyHelpCommand
+from discord.ext import commands
 from log import LoggerFactory
 
 log = LoggerFactory.get_logger(__name__)
@@ -16,9 +14,8 @@ help_command = MyHelpCommand()
 client = commands.Bot(command_prefix=Config.COMMAND_PREFIX, help_command=help_command)
 
 client.global_variables = global_variables.GlobalVariables()
-client.file_repository = file_repository.FileRepository()
 
-for filename in os.listdir("./cogs"):
+for filename in os.listdir(os.getcwd() + "/bot/cogs"):
     file = splitext(filename)
     if file[1] == ".py":
         log.info("Load: " + file[0])
@@ -27,7 +24,7 @@ for filename in os.listdir("./cogs"):
 
 @client.event
 async def on_ready():
-    log.info("Bot started")
+    log.info("Squid-Bot started :)")
 
 
 @client.event
@@ -59,4 +56,5 @@ async def reload(ctx, extension):
     client.load_extension(f"cogs.{extension}")
 
 
-client.run(Config.DISCORD_TOKEN)
+token = os.environ['BOT_TOKEN']
+client.run(token)
