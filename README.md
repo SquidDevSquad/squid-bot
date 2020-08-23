@@ -1,18 +1,29 @@
-# squid-bot
+# squid-bot v1.6.0
+This Discord bot has the following features:
+#### Overwatch Team Generation
+ Generates Overwatch 6v6 teams out of a selected Discord voice channel, taking into consideration the following:
+ * Only users who are in status `online` on Discord are selected for team generation, others are considered spectators.
+ * If there are more than 12 users in the voice channel, the remainder who are not selected are auto-benched. This means they are mandatory to be selected in the following generation (There are `add/removeFromBench` commands for adjustments).
+ * Overwatch skill rating is displayed with appropriate emojis and the average team skill rating is calculated and presented after team generation (this relies on Discord roles).
+    
+#### Overwatch Map Generation
 
-## Configuration
+* Generates a random Overwatch map and displays an appropriate title and image.
+* Marks the generated map in order to avoid repeating the same map in a single run.
+
+#### Giveaway Lottery
+
+* Randomly selects a winner for a giveaway lottery out of a selected voice channel, displaying a designed message.
+* Marks the winner in order to void repeating the same winner in a single run (allows for repeated lotteries without restart).
+
+## Config.py Configuration
 | Config | Description |
 |---|---|
-| DISCORD_TOKEN | The token needed to contact your bot |
-| COMMAND_PREFIX | Needs to be at the beginning of every command |
-| ALLOWED_CHANNEL | IDs of the allowed channel |
-| ALLOWED_USER_TO_ADMIN_COMMANDS | IDs of the users who are allowed to use admin commands |
-
-### Configure
-#### Admin permissions:
-In your `Config.py` insert the Discord IDs of wanted admin users to `ALLOWED_USER_TO_ADMIN_COMMANDS` list
-#### Permitted voice channels:
-In your `Config.py` insert the Discord IDs of wanted voice channels to `COMMUNITY_GAMES_VOICE_CHANNEL` and `GIVEAWAY_VOICE_CHANNEL` 
+| COMMAND_PREFIX | The prefix to use at the beginning of every command |
+| ADMIN_IDS | Discord IDs of the users who are allowed to use admin commands |
+| ALLOWED_TEXT_CHANNEL_IDS | Discord IDs of the allowed text channels |
+| GIVEAWAY_VOICE_CHANNEL_ID | Discord channel ID for the giveaway lottery |
+| COMMUNITY_GAMES_VOICE_CHANNEL_ID | Discord channel ID for the team generation |
 
 ### How To Run?
 
