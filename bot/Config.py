@@ -1,5 +1,5 @@
 # Needs to be at the beginning of every command
-COMMAND_PREFIX = '<'
+COMMAND_PREFIX = '>'
 
 # Names of the allowed channel
 ALLOWED_TEXT_CHANNEL_IDS = [697136698320224286, 747058926964441138]
