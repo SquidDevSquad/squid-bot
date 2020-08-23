@@ -4,7 +4,7 @@ This Discord bot has the following features:
  Generates Overwatch 6v6 teams out of a selected Discord voice channel, taking into consideration the following:
  * Only users who are in status `online` on Discord are selected for team generation, others are considered spectators.
  * If there are more than 12 users in the voice channel, the remainder who are not selected are auto-benched. This means they are mandatory to be selected in the following generation (There are `add/removeFromBench` commands for adjustments)
- * Overwatch skill rating is displayed with appropriately emoji's and the average of team skill rating is calculated and presented after team generation (this relies on Discord roles)
+ * Overwatch skill rating is displayed with appropriate emojis and the average of team skill rating is calculated and presented after team generation (this relies on Discord roles)
     
 #### Overwatch Map Generation
 
