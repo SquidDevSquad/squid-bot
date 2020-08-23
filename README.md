@@ -1,4 +1,4 @@
-# squid-bot
+# squid-bot v1.6.0
 This Discord bot has the following features:
 #### Overwatch Team Generation
  Generates Overwatch 6v6 teams out of a selected Discord voice channel, taking into consideration the following:
