@@ -13,7 +13,7 @@ This Discord bot has the following features:
 
 #### Giveaway Lottery
 
-* Randomly selects a winner for a giveaway lotter out of a selected voice channel, displaying a designed message.
+* Randomly selects a winner for a giveaway lottery out of a selected voice channel, displaying a designed message.
 * Marks the winner in order to void repeating the same winner ina single run (allows for repeated lotteries without restart)
 
 ## Config.py Configuration
