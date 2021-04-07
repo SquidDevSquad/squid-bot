@@ -1,7 +1,6 @@
 import string
 
 import discord
-import requests
 from discord.ext import commands
 
 import decorators
@@ -23,7 +22,28 @@ def from_json():
     return ListUtils.remove_duplicates(maps)
 
 
-maps_json = requests.get('https://api.overwatchleague.com/maps').json()
+# maps_json = requests.get('https://api.overwatchleague.com/maps').json()
+maps_json = [
+    {
+        "guid": "guid",
+        "name": {
+            "en_US": "Anubis"
+        },
+        "gameModes": [
+            {
+                "Id": "string",
+                "Name": "string",
+                "Key": {
+                    "href": "string"
+                }
+            }
+        ],
+        "id": "string",
+        "icon": "",
+        "thumbnail": "string",
+        "type": "string"
+    }
+]
 
 
 class CommunityGamesMapGenerator(commands.Cog):
@@ -38,7 +58,7 @@ class CommunityGamesMapGenerator(commands.Cog):
     async def get_random_map_command(self, ctx):
         used_maps = self.client.global_variables.used_maps
         if len(self.maps) == len(used_maps):
-            await ctx.send("All maps are used up. You need to reset the maps first")
+            await ctx.send(ctx.author.mention + " All maps are used up. You need to reset the maps first")
             return
 
         random_map = self.get_random_map(self.maps)

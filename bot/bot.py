@@ -1,17 +1,20 @@
 import os
 from os.path import splitext
 
+import discord
+from discord.ext import commands
+
 import Config
 import decorators
 import global_variables
 from commands.MyHelpCommand import MyHelpCommand
-from discord.ext import commands
 from log import LoggerFactory
 
 log = LoggerFactory.get_logger(__name__)
 
+intents = discord.Intents(messages=True, members=True, presences=True, guilds=True)
 help_command = MyHelpCommand()
-client = commands.Bot(command_prefix=Config.COMMAND_PREFIX, help_command=help_command)
+client = commands.Bot(command_prefix=Config.COMMAND_PREFIX, help_command=help_command, intents=intents)
 
 client.global_variables = global_variables.GlobalVariables()
 
