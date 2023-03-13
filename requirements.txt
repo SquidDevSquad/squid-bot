@@ -7,7 +7,7 @@ certifi==2020.6.20
 chardet==3.0.4
 discord==1.0.1
 discord.py==2.2.2
-future==0.18.2
+future==0.18.3
 helper==2.4.2
 helpers==0.2.0
 idna==2.5
